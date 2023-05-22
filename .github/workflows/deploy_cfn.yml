@@ -35,7 +35,7 @@ jobs:
       run: cd lake-freeze-frontend/ && sam build
       
     - name: SAM deploy
-      run: cd lake_freeze_api/ && sam deploy
+      run: cd lake-freeze-frontend/ && sam deploy
 
 
 

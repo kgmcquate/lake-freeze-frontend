@@ -54,47 +54,46 @@ Resources:
     
     # Condition: WithOAIEnabled
 
-  CfDistribution:
-    Type: "AWS::CloudFront::Distribution"
-    Condition: WithOutOAIEnabled
-    Metadata:
-      Comment: 'A simple CloudFront distribution with an S3 origin'
-    Properties:
-      DistributionConfig:
-        Comment: 'A simple distribution with an S3 origin'
-        DefaultCacheBehavior:
-          AllowedMethods:
-            - 'HEAD'
-            - 'GET'
-          CachedMethods:
-            - 'HEAD'
-            - 'GET'
-          Compress: false
-          DefaultTTL: 86400
-          ForwardedValues:
-            Cookies:
-              Forward: 'none'
-            Headers:
-              - 'Origin'
-            QueryString: false
-          MaxTTL: 31536000
-          MinTTL: 86400
-          TargetOriginId: !Sub 's3-origin-${PublicS3BucketName}'
-          ViewerProtocolPolicy: 'redirect-to-https'
-        DefaultRootObject: 'index.html'
-        Enabled: true
-        HttpVersion: 'http1.1'
-        IPV6Enabled: false
-        Origins:
-          - DomainName: !Sub '${PublicS3BucketName}.s3.amazonaws.com'
-            Id: !Sub 's3-origin-${PublicS3BucketName}'
-            S3OriginConfig: {}
-        PriceClass: 'PriceClass_All'
+  # CfDistribution:
+  #   Type: "AWS::CloudFront::Distribution"
+  #   Condition: WithOutOAIEnabled
+  #   Metadata:
+  #     Comment: 'A simple CloudFront distribution with an S3 origin'
+  #   Properties:
+  #     DistributionConfig:
+  #       Comment: 'A simple distribution with an S3 origin'
+  #       DefaultCacheBehavior:
+  #         AllowedMethods:
+  #           - 'HEAD'
+  #           - 'GET'
+  #         CachedMethods:
+  #           - 'HEAD'
+  #           - 'GET'
+  #         Compress: false
+  #         DefaultTTL: 86400
+  #         ForwardedValues:
+  #           Cookies:
+  #             Forward: 'none'
+  #           Headers:
+  #             - 'Origin'
+  #           QueryString: false
+  #         MaxTTL: 31536000
+  #         MinTTL: 86400
+  #         TargetOriginId: !Sub 's3-origin-${PublicS3BucketName}'
+  #         ViewerProtocolPolicy: 'redirect-to-https'
+  #       DefaultRootObject: 'index.html'
+  #       Enabled: true
+  #       HttpVersion: 'http1.1'
+  #       IPV6Enabled: false
+  #       Origins:
+  #         - DomainName: !Sub '${PublicS3BucketName}.s3.amazonaws.com'
+  #           Id: !Sub 's3-origin-${PublicS3BucketName}'
+  #           S3OriginConfig: {}
+  #       PriceClass: 'PriceClass_All'
 
 
   CfDistributionWithAOI:
     Type: "AWS::CloudFront::Distribution"
-    Condition: WithOAIEnabled
     Metadata:
       Comment: 'A simple CloudFront distribution with an S3 origin'
     Properties:

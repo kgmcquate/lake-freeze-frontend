@@ -16,7 +16,7 @@ Parameters:
   
   PublicS3BucketName:
     Type: String
-    Default: !Sub public-zone-${AWS::AccountId}-${AWS::Region}
+    Default: public-zone-117819748843-us-east-1 #!Sub public-zone-${AWS::AccountId}-${AWS::Region}
 
 
 # Parameters:

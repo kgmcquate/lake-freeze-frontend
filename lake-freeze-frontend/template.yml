@@ -67,7 +67,7 @@ Resources:
           MinTTL: 86400
           TargetOriginId: !Sub 's3-origin-${PublicS3BucketName}'
           ViewerProtocolPolicy: 'redirect-to-https'
-        DefaultRootObject: '${}/index.html'
+        DefaultRootObject: !Sub '${PublicS3Prefix}/index.html'
         Enabled: true
         HttpVersion: 'http1.1'
         IPV6Enabled: false

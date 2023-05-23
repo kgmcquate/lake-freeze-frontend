@@ -36,7 +36,6 @@ jobs:
     #     cache: 'npm'
     #     cache-dependency-path: lake-freeze-frontend/package-lock.json
 
-
     - name: SAM build
       run: cd lake-freeze-frontend/ && sam build
       

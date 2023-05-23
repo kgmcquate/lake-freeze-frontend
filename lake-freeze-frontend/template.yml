@@ -6,13 +6,10 @@ Parameters:
     Type: String
     Default: kevin-mcquate.net
 
-  DomainTLSCertificateID:
+  DomainTLSCertificateArn:
     Type: String
-    Default: 7d99c9a9-0cf8-4500-9c6b-31bb519c69c1  #arn:aws:acm:us-east-1:117819748843:certificate/
+    Default: arn:aws:acm:us-east-1:117819748843:certificate/7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
 
-  DomainHostedZoneId:
-    Type: String
-    Default: Z028090523Q7W6VMX59IC
   
   PublicS3BucketName:
     Type: String
@@ -24,7 +21,7 @@ Parameters:
 
 
 Resources:
-  S3BucketPolicyWithAOI:
+  S3BucketPolicy:
     Type: 'AWS::S3::BucketPolicy'
     Metadata:
       Comment: 'Bucket policy to allow cloudfront to access the data'
@@ -41,13 +38,15 @@ Resources:
               - !Sub 'arn:aws:s3:::${PublicS3BucketName}/*'
 
 
-  CfDistributionWithAOI:
+  CfDistribution:
     Type: "AWS::CloudFront::Distribution"
     Metadata:
       Comment: 'A simple CloudFront distribution with an S3 origin'
     Properties:
       DistributionConfig:
         Comment: 'A simple distribution with an S3 origin'
+        Aliases:
+          - !Sub ${DomainName}
         DefaultCacheBehavior:
           AllowedMethods:
             - 'HEAD'
@@ -71,6 +70,10 @@ Resources:
         Enabled: true
         HttpVersion: 'http1.1'
         IPV6Enabled: false
+        ViewerCertificate:
+          AcmCertificateArn: !Sub ""
+          MinimumProtocolVersion: TLSv1.1_2016
+          SslSupportMethod: sni-only
         Origins:
           - DomainName: !Sub '${PublicS3BucketName}.s3.amazonaws.com'
             Id: !Sub 's3-origin-${PublicS3BucketName}'

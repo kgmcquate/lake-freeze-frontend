@@ -9,7 +9,7 @@ env:
   AWS_REGION: us-east-1
   AWS_ACCOUNT_ID: 117819748843
   PROJECT_PATH: lake-freeze-frontend
-  DOMAIN_NAME: https://kevin-mcquate.net
+  DOMAIN_NAME: kevin-mcquate.net
   REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}
   PUBLIC_ZONE_BUCKET_NAME: public-zone-117819748843-us-east-1
 
@@ -60,7 +60,7 @@ jobs:
         --s3-prefix ${{ github.event.repository.name }}
         --parameter-overrides 
         DomainName=${DOMAIN_NAME}
-        DomainTLSCertificateID=7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
+        DomainTLSCertificateArn=arn:aws:acm:${AWS_REGION}:${AWS_ACCOUNT_ID}:certificate/7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
         DomainHostedZoneId=Z028090523Q7W6VMX59IC
         PublicS3BucketName=${PUBLIC_ZONE_BUCKET_NAME}
         PublicS3Prefix=${{ github.event.repository.name }}

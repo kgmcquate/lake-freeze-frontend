@@ -52,6 +52,7 @@ jobs:
     - name: SAM deploy
       run: >
         sam deploy 
+        --stack-name lake-freeze-frontend
         --region ${AWS_REGION}
         --no-fail-on-empty-changeset
         --capabilities CAPABILITY_AUTO_EXPAND

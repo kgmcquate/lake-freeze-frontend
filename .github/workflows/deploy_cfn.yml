@@ -62,7 +62,9 @@ jobs:
         DomainName=${DOMAIN_NAME}
         DomainTLSCertificateID=7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
         DomainHostedZoneId=Z028090523Q7W6VMX59IC
-        PublicS3BucketName=${PUBLIC_ZONE_BUCKET_NAME}
+
+
+      # PublicS3BucketName=${PUBLIC_ZONE_BUCKET_NAME}
 
 
     - name: npm install

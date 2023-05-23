@@ -70,7 +70,7 @@ Resources:
         HttpVersion: 'http1.1'
         IPV6Enabled: false
         ViewerCertificate:
-          AcmCertificateArn: !Sub ""
+          AcmCertificateArn: !Ref DomainTLSCertificateArn
           MinimumProtocolVersion: TLSv1.1_2016
           SslSupportMethod: sni-only
         Origins:

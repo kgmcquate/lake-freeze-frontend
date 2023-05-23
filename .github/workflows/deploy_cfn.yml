@@ -19,7 +19,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: ${{ env.PROJECT_PATH }}
+    working-directory: lake-freeze-frontend
 
 jobs:
   deploy:

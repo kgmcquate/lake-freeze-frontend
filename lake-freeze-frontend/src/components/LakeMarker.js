@@ -1,9 +1,8 @@
 import {MarkerF} from '@react-google-maps/api';
-// import frozenIcon from '@iconify/icons-mdi'
 import {useState} from 'react';
 
 
-const frozenIcon = 'bi:snow'
+// const frozenIcon = 'bi:snow'
 
 export function LakeMarker({ lake_weather_report, clusterer }) {
 

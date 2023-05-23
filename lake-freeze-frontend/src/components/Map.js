@@ -36,10 +36,10 @@ export function Map() {
       setCenter({lat: avgLat, lng: avgLng})
 
 
-      const minLat = Math.min(lake => {return lake.latitude})
-      const minLng = Math.min(lake => {return lake.longitude})
-      const maxLat = Math.max(lake => {return lake.latitude})
-      const maxLng = Math.max(lake => {return lake.longitude})
+      // const minLat = Math.min(lake => {return lake.latitude})
+      // const minLng = Math.min(lake => {return lake.longitude})
+      // const maxLat = Math.max(lake => {return lake.latitude})
+      // const maxLng = Math.max(lake => {return lake.longitude})
 
       // setBounds(
       //   new window.google.maps.LatLngBounds(

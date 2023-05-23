@@ -41,7 +41,7 @@ jobs:
       run: >
         cd lake-freeze-frontend/
         npm run build
-        aws s3 cp lake-freeze-frontend/build/* s3://public-zone-117819748843-us-east-1/
+        aws s3 cp build/* s3://public-zone-117819748843-us-east-1/
 
 
 

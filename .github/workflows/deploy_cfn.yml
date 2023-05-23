@@ -30,12 +30,21 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
+    # - uses: actions/setup-node@v3
+    #   with:
+    #     node-version: 18
+    #     cache: 'npm'
+    #     cache-dependency-path: lake-freeze-frontend/package-lock.json
+
 
     - name: SAM build
       run: cd lake-freeze-frontend/ && sam build
       
     - name: SAM deploy
       run: cd lake-freeze-frontend/ && sam deploy --no-fail-on-empty-changeset
+
+    - name: npm install
+      run: cd lake-freeze-frontend/ && npm install 
 
     - name: React app deploy 
       run: |

@@ -37,5 +37,8 @@ jobs:
     - name: SAM deploy
       run: cd lake-freeze-frontend/ && sam deploy
 
+    - name: React app deploy 
+      run: aws s3 cp lake-freeze-frontend/public/index.html s3://public-zone-117819748843-us-east-1/
+
 
 

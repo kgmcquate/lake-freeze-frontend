@@ -60,8 +60,7 @@ jobs:
         --s3-prefix ${{ github.event.repository.name }}
         --parameter-overrides 
         DomainName=${DOMAIN_NAME}
-        DomainTLSCertificateArn=arn:aws:acm:${AWS_REGION}:${AWS_ACCOUNT_ID}:certificate/7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
-        DomainHostedZoneId=Z028090523Q7W6VMX59IC
+        DomainTLSCertificateArn=arn:aws:acm:us-east-1:117819748843:certificate/7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
         PublicS3BucketName=${PUBLIC_ZONE_BUCKET_NAME}
         PublicS3Prefix=${{ github.event.repository.name }}
 

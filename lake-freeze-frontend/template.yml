@@ -10,7 +10,6 @@ Parameters:
     Type: String
     Default: arn:aws:acm:us-east-1:117819748843:certificate/7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
 
-  
   PublicS3BucketName:
     Type: String
     Default: public-zone-117819748843-us-east-1 #!Sub public-zone-${AWS::AccountId}-${AWS::Region}

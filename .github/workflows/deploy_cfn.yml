@@ -7,13 +7,18 @@ on:
 
 env:
   AWS_REGION: us-east-1
+  AWS_ACCOUNT_ID: 117819748843
+  PROJECT_PATH: lake-freeze-frontend
+  DOMAIN_NAME: https://kevin-mcquate.net
+  REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}
+
 
 permissions:
   contents: read
 
 defaults:
   run:
-    working-directory: lake-freeze-frontend/
+    working-directory: ${{ env.PROJECT_PATH }}
 
 jobs:
   deploy:
@@ -44,7 +49,19 @@ jobs:
       run: sam build
       
     - name: SAM deploy
-      run: sam deploy --no-fail-on-empty-changeset
+      run: >
+        sam deploy 
+        --region ${AWS_REGION}
+        --no-fail-on-empty-changeset
+        --capabilities CAPABILITY_AUTO_EXPAND
+        --s3-bucket deployment-zone-${AWS_ACCOUNT_ID}
+        --s3-prefix ${{ github.event.repository.name }}
+        --parameter-overrides 
+        DomainName=${DOMAIN_NAME}
+        DomainTLSCertificateID=7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
+        DomainHostedZoneId=Z028090523Q7W6VMX59IC
+        PublicS3BucketName=public-zone-${AWS_ACCOUNT_ID}-${AWS_REGION}
+
 
     - name: npm install
       run: npm install 
@@ -54,7 +71,22 @@ jobs:
         npm run build
         ls
         ls build/
-        aws s3 cp --recursive build/ s3://public-zone-117819748843-us-east-1/lake-freeze/
+        aws s3 cp --recursive build/ s3://public-zone-${AWS_ACCOUNT_ID}-${AWS_REGION}/${PROJECT_PATH}
 
 
 
+  DomainName:
+    Type: String
+    Default: kevin-mcquate.net
+
+  DomainTLSCertificateARN:
+    Type: String
+    Default: arn:aws:acm:us-east-1:117819748843:certificate/7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
+
+  DomainHostedZoneId:
+    Type: String
+    Default: Z028090523Q7W6VMX59IC
+  
+  PublicS3BucketName:
+    Type: String
+    Default: public-zone-117819748843-us-east-1

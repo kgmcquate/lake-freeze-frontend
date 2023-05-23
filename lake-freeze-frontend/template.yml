@@ -6,9 +6,9 @@ Parameters:
     Type: String
     Default: kevin-mcquate.net
 
-  DomainTLSCertificateARN:
+  DomainTLSCertificateID:
     Type: String
-    Default: arn:aws:acm:us-east-1:117819748843:certificate/7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
+    Default: 7d99c9a9-0cf8-4500-9c6b-31bb519c69c1  #arn:aws:acm:us-east-1:117819748843:certificate/
 
   DomainHostedZoneId:
     Type: String

@@ -1,8 +1,8 @@
-import {GoogleMap, MarkerF, MarkerClusterer} from '@react-google-maps/api';
+import {GoogleMap, MarkerClusterer} from '@react-google-maps/api';
 
-import {useMemo, useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
-import { LakeMarker, LakeInfoBox } from './LakeMarker';
+import { LakeMarker } from './LakeMarker';
 
 
 const getAvg = (arr) => arr.reduce((a, b) => a + b) / arr.length
@@ -15,7 +15,7 @@ export function Map() {
   const [center, setCenter] = useState([])
   // const [zoom, setZoom] = useState([10])
   const zoom = 10
-  const [bounds, setBounds] = useState([])
+  // const [bounds, setBounds] = useState([])
 
 
   useEffect(() => {
@@ -41,12 +41,12 @@ export function Map() {
       const maxLat = Math.max(lake => {return lake.latitude})
       const maxLng = Math.max(lake => {return lake.longitude})
 
-      setBounds(
-        new window.google.maps.LatLngBounds(
-          window.google.maps.LatLng(minLat, minLng),
-          window.google.maps.LatLng(maxLat, maxLng)
-        )
-      )
+      // setBounds(
+      //   new window.google.maps.LatLngBounds(
+      //     window.google.maps.LatLng(minLat, minLng),
+      //     window.google.maps.LatLng(maxLat, maxLng)
+      //   )
+      // )
         
       const reportsResponse = await fetch(        
         process.env.REACT_APP_LAKES_API_URL + "/lake_weather_reports?" + lakes.map(lake => `lake_id=${lake.id}`).join("&")  //TODO this chokes when there's too many lakes

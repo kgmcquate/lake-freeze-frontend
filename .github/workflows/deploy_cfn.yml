@@ -11,6 +11,10 @@ env:
 permissions:
   contents: read
 
+defaults:
+  run:
+    working-directory: lake-freeze-frontend/
+
 jobs:
   deploy:
     name: Deploy 
@@ -37,17 +41,16 @@ jobs:
     #     cache-dependency-path: lake-freeze-frontend/package-lock.json
 
     - name: SAM build
-      run: cd lake-freeze-frontend/ && sam build
+      run: sam build
       
     - name: SAM deploy
-      run: cd lake-freeze-frontend/ && sam deploy --no-fail-on-empty-changeset
+      run: sam deploy --no-fail-on-empty-changeset
 
     - name: npm install
-      run: cd lake-freeze-frontend/ && npm install 
+      run: npm install 
 
     - name: React app deploy 
       run: |
-        cd lake-freeze-frontend/
         npm run build
         ls
         ls build/

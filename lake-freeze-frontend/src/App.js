@@ -1,6 +1,5 @@
-import {useMemo, useState, useEffect} from 'react';
 import './App.css';
-import {GoogleMap, GoogleMapProps, useLoadScript, MarkerF} from '@react-google-maps/api';
+import {useLoadScript} from '@react-google-maps/api';
 
 import { Map } from "./components/Map.js"
 

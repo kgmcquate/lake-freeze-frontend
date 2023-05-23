@@ -1,7 +1,6 @@
-import {GoogleMap, MarkerF} from '@react-google-maps/api';
-import {Icon} from '@iconify/react'
+import {MarkerF} from '@react-google-maps/api';
 // import frozenIcon from '@iconify/icons-mdi'
-import {useMemo, useState, useEffect} from 'react';
+import {useState} from 'react';
 
 
 const frozenIcon = 'bi:snow'
@@ -49,15 +48,3 @@ export function LakeInfoBox({lake_weather_report}) {
         </div>
     )
 }
-
-// class LakeFreezeReport(SQLModel, table=True):
-//     __tablename__ = "lake_freeze_reports"
-//     lake_id: int = Field(primary_key=True)
-//     date: datetime.date = Field(primary_key=True)
-//     ice_alg_version: str
-//     ice_m: float
-//     is_frozen: bool
-//     latitude: float
-//     longitude: float
-//     lake_name: str
-//     last_updated_ts: Optional[datetime.datetime] = Field(default=datetime.datetime.now(datetime.timezone.utc))

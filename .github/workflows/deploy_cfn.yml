@@ -10,8 +10,10 @@ env:
   AWS_ACCOUNT_ID: 117819748843
   PROJECT_PATH: lake-freeze-frontend
   DOMAIN_NAME: kevin-mcquate.net
+  API_DOMAIN_NAME: lake-freeze-api.kevin-mcquate.net
   REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}
   PUBLIC_ZONE_BUCKET_NAME: public-zone-117819748843-us-east-1
+  PUBLIC_ZONE_PREFIX: ${{ github.event.repository.name }}
 
 
 permissions:
@@ -62,7 +64,7 @@ jobs:
         DomainName=${DOMAIN_NAME}
         DomainTLSCertificateArn=arn:aws:acm:us-east-1:117819748843:certificate/7d99c9a9-0cf8-4500-9c6b-31bb519c69c1
         PublicS3BucketName=${PUBLIC_ZONE_BUCKET_NAME}
-        PublicS3Prefix=${{ github.event.repository.name }}
+        PublicS3Prefix=${PUBLIC_ZONE_PREFIX}
 
 
     - name: npm install
@@ -70,8 +72,8 @@ jobs:
 
     - name: react app env file
       run: |
-        echo REACT_APP_LAKES_API_URL="${DOMAIN_NAME}" >> .env
-        echo PUBLIC_URL="${{ github.event.repository.name }}" >> .env
+        echo REACT_APP_LAKES_API_URL="https://${API_DOMAIN_NAME}" >> .env
+        echo PUBLIC_URL="${PUBLIC_ZONE_PREFIX}" >> .env
         echo REACT_APP_GOOGLE_MAPS_API_KEY="${REACT_APP_GOOGLE_MAPS_API_KEY}" >> .env
 
     - name: React app deploy 

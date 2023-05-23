@@ -17,6 +17,10 @@ Parameters:
   PublicS3BucketName:
     Type: String
     Default: public-zone-117819748843-us-east-1 #!Sub public-zone-${AWS::AccountId}-${AWS::Region}
+  
+  PublicS3Prefix:
+    Type: String
+    Default: lake-freeze-frontend
 
 
 Resources:
@@ -63,7 +67,7 @@ Resources:
           MinTTL: 86400
           TargetOriginId: !Sub 's3-origin-${PublicS3BucketName}'
           ViewerProtocolPolicy: 'redirect-to-https'
-        DefaultRootObject: 'lake-freeze/index.html'
+        DefaultRootObject: '${}/index.html'
         Enabled: true
         HttpVersion: 'http1.1'
         IPV6Enabled: false

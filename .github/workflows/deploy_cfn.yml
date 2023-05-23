@@ -72,7 +72,7 @@ jobs:
     - name: react app env file
       run: |
         echo REACT_APP_LAKES_API_URL="${DOMAIN_NAME}" >> .env
-        echo PUBLIC_URL="lake-freeze" >> .env
+        echo PUBLIC_URL="${{ github.event.repository.name }}" >> .env
         echo REACT_APP_GOOGLE_MAPS_API_KEY="${REACT_APP_GOOGLE_MAPS_API_KEY}" >> .env
 
     - name: React app deploy 

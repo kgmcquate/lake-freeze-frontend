@@ -38,10 +38,12 @@ jobs:
       run: cd lake-freeze-frontend/ && sam deploy --no-fail-on-empty-changeset
 
     - name: React app deploy 
-      run: >
+      run: |
         cd lake-freeze-frontend/
         npm run build
-        aws s3 cp build/* s3://public-zone-117819748843-us-east-1/
+        ls
+        ls build/
+        aws s3 cp build/* s3://public-zone-117819748843-us-east-1/lake-freeze/
 
 
 

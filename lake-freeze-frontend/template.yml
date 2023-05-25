@@ -46,8 +46,6 @@ Resources:
         Comment: 'A simple distribution with an S3 origin'
         Aliases:
           - !Sub ${DomainName}
-        CachePolicyConfig:
-          
         DefaultCacheBehavior:
           AllowedMethods:
             - 'HEAD'

@@ -1,5 +1,5 @@
 import {MarkerF, InfoWindow} from '@react-google-maps/api';
-import {useState, useMemo, useEffect} from 'react';
+import {useState} from 'react';
 
 
 // const frozenIcon = 'bi:snow'

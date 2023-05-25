@@ -93,6 +93,7 @@ export function Map() {
         zoom={zoom}
         center={center}
         mapContainerClassName='map-container'
+        options={{mapTypeId: "SATELLITE"}}
         >
       {/* <StandaloneSearchBox
           // onLoad={onLoad}

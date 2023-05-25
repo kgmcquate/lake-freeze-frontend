@@ -1,4 +1,4 @@
-import {GoogleMap, MarkerClusterer} from '@react-google-maps/api';
+import {GoogleMap, MarkerClusterer } from '@react-google-maps/api';
 
 import {useState, useEffect} from 'react';
 
@@ -12,17 +12,17 @@ export function Map() {
 
   // const [lakes, setLakes] = useState([]);
   const [lakeWeatherReports, setlakeWeatherReports] = useState([])
-  const [center, setCenter] = useState([])
+  const [center, setCenter] = useState({lat: 0, lng: 0});
   // const [zoom, setZoom] = useState([10])
-  const zoom = 10
+  const zoom = 7
   // const [bounds, setBounds] = useState([])
 
 
   useEffect(() => {
-    const fetchLakes = async () => {
+    async function fetchLakes() {
       const response = await fetch(        
         process.env.REACT_APP_LAKES_API_URL + "/lakes?" + new URLSearchParams({
-          limit: 100
+          limit: 500
         })
       )
 
@@ -33,13 +33,47 @@ export function Map() {
       console.log("avg lat: " + avgLat)
       console.log("avg lng: " + avgLng)
 
-      setCenter({lat: avgLat, lng: avgLng})
+      
+      if (!isNaN(avgLat) && !isNaN(avgLng)) {
+        setCenter({lat: avgLat, lng: avgLng})
+      }
+    
+      // setLakes(lakes)
 
+      console.log(lakes)
 
-      // const minLat = Math.min(lake => {return lake.latitude})
-      // const minLng = Math.min(lake => {return lake.longitude})
-      // const maxLat = Math.max(lake => {return lake.latitude})
-      // const maxLng = Math.max(lake => {return lake.longitude})
+      console.log(lakes.map(lake => lake.latitude))
+
+      const minLat = Math.min(...lakes.map(lake => lake.latitude))
+      const minLng = Math.min(...lakes.map(lake => lake.longitude))
+      const maxLat = Math.max(...lakes.map(lake => lake.latitude))
+      const maxLng = Math.max(...lakes.map(lake => lake.longitude))
+
+      console.log("minLat: " + minLat)
+      console.log("maxLat: " + maxLat)
+      console.log("maxLng: " + maxLng)
+
+     //TODO  make the lake and the weather report asynchronous
+        
+      const weatherReportResponse = await fetch(        
+        process.env.REACT_APP_LAKES_API_URL + "/lake_weather_reports?" + new URLSearchParams({
+          // date: ,
+          lake_ids: lakes.map(lake => lake.id).join(","),
+          // min_surface_area: Optional[float] = None,
+          // max_surface_area: Optional[float] = None,
+          min_latitude: minLat,
+          max_latitude: maxLat,
+          min_longitude: minLng,
+          max_longitude: maxLng,
+          limit: 1000
+        })
+      )
+
+      const reportsData =  await weatherReportResponse.json()
+
+      setlakeWeatherReports(
+        reportsData
+      )
 
       // setBounds(
       //   new window.google.maps.LatLngBounds(
@@ -47,37 +81,11 @@ export function Map() {
       //     window.google.maps.LatLng(maxLat, maxLng)
       //   )
       // )
-        
-      const reportsResponse = await fetch(        
-        process.env.REACT_APP_LAKES_API_URL + "/lake_weather_reports?" + lakes.map(lake => `lake_id=${lake.id}`).join("&")  //TODO this chokes when there's too many lakes
-      )
-
-      const reportsData =  await reportsResponse.json()
-
-      console.log(reportsData)
-
-      setlakeWeatherReports(
-        reportsData
-      )
     }
 
     fetchLakes()
 
   }, []);
-
-  // const markers = 
-
-  // return (
-  //   <div className="map">
-  //     <GoogleMap
-  //       zoom={zoom}
-  //       center={center}
-  //       mapContainerClassName='map-container'
-  //       >
-  //         {markers}
-  //     </GoogleMap>
-  //   </div>
-  // )
 
   return (
     <div className="map">
@@ -86,12 +94,47 @@ export function Map() {
         center={center}
         mapContainerClassName='map-container'
         >
-        <MarkerClusterer options={{ imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' }}>
+      {/* <StandaloneSearchBox
+          // onLoad={onLoad}
+          // onPlacesChanged={
+          //   onPlacesChanged
+          // }
+        >
+          <input
+            type="text"
+            placeholder="Customized your placeholder"
+            style={{
+              boxSizing: `border-box`,
+              border: `1px solid transparent`,
+              width: `240px`,
+              height: `32px`,
+              padding: `0 12px`,
+              borderRadius: `3px`,
+              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+              fontSize: `14px`,
+              outline: `none`,
+              textOverflow: `ellipses`,
+              position: "absolute",
+              left: "50%",
+              marginLeft: "-120px"
+            }}
+          />
+        </StandaloneSearchBox> */}
+
+
+{/* 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' */}
+
+        <MarkerClusterer 
+          options={{ 
+            imagePath: `./cluster`,
+            imageExtension: "png"
+          }}
+        >
           {(clusterer) =>
-            lakeWeatherReports.map(w => 
+            lakeWeatherReports.map(lake_weather_report => 
               <LakeMarker
-                key={w.lake_id}
-                lake_weather_report={w} 
+                key={lake_weather_report.lake_id}
+                lake_weather_report={lake_weather_report}
                 clusterer={clusterer}
               />
             )

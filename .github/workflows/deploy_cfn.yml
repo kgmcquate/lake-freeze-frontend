@@ -79,5 +79,6 @@ jobs:
     - name: React app deploy 
       run: |
         npm run build
+        aws s3 rm --recursive s3://${PUBLIC_ZONE_BUCKET_NAME}/${{ github.event.repository.name }}
         aws s3 cp --recursive build/ s3://${PUBLIC_ZONE_BUCKET_NAME}/${{ github.event.repository.name }}
 

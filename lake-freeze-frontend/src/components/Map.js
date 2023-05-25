@@ -65,7 +65,7 @@ export function Map() {
           max_latitude: maxLat,
           min_longitude: minLng,
           max_longitude: maxLng,
-          limit: 1000
+          limit: 200
         })
       )
 

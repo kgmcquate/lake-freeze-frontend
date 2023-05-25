@@ -126,7 +126,7 @@ export function Map() {
 
         <MarkerClusterer 
           options={{ 
-            imagePath: `%PUBLIC_URL%/cluster`,
+            imagePath: process.env.PUBLIC_URL + `/cluster`,
             imageExtension: "png"
           }}
         >

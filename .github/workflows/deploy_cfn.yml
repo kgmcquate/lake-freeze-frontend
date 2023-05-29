@@ -9,7 +9,7 @@ env:
   AWS_REGION: us-east-1
   AWS_ACCOUNT_ID: 117819748843
   PROJECT_PATH: lake-freeze-frontend
-  DOMAIN_NAME: kevin-mcquate.net
+  DOMAIN_NAME: lake-freeze.kevin-mcquate.net
   API_DOMAIN_NAME: lake-freeze-api.kevin-mcquate.net
   REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}
   PUBLIC_ZONE_BUCKET_NAME: public-zone-117819748843-us-east-1

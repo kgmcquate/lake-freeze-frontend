@@ -1,11 +1,26 @@
-import {GoogleMap, MarkerClusterer } from '@react-google-maps/api';
+import {GoogleMap, MarkerClusterer, Autocomplete} from '@react-google-maps/api';
 
 import {useState, useEffect} from 'react';
 
 import { LakeMarker } from './LakeMarker';
 
+import { LakeFilterBox } from './LakeFilterBox'
+
+import './Map.css'
 
 const getAvg = (arr) => arr.reduce((a, b) => a + b) / arr.length
+
+
+const LAKE_COUNT_LIMIT = 200
+
+
+const clusterStyles = [1,2,3].map(x => {return {  
+    height: x*32, 
+    width: x*32,
+    textColor: '#ffffff', 
+    url: process.env.PUBLIC_URL + `/icons8-circle-96.png`
+  }}
+)
 
 
 export function Map() {
@@ -16,13 +31,16 @@ export function Map() {
   // const [zoom, setZoom] = useState([10])
   const zoom = 7
   // const [bounds, setBounds] = useState([])
+  const [isLoading, setIsLoading] =  useState(true)
 
 
   useEffect(() => {
+    setIsLoading(true)
+
     async function fetchLakes() {
       const response = await fetch(        
         process.env.REACT_APP_LAKES_API_URL + "/lakes?" + new URLSearchParams({
-          limit: 500
+          limit: LAKE_COUNT_LIMIT
         })
       )
 
@@ -65,7 +83,7 @@ export function Map() {
           max_latitude: maxLat,
           min_longitude: minLng,
           max_longitude: maxLng,
-          limit: 200
+          limit: LAKE_COUNT_LIMIT
         })
       )
 
@@ -74,6 +92,8 @@ export function Map() {
       setlakeWeatherReports(
         reportsData
       )
+
+      setIsLoading(false)
 
       // setBounds(
       //   new window.google.maps.LatLngBounds(
@@ -85,16 +105,32 @@ export function Map() {
 
     fetchLakes()
 
+
   }, []);
 
+  const clusterer = <MarkerClusterer></MarkerClusterer>
+  console.log(clusterer)
+
   return (
-    <div className="map">
+    <div>      
+
       <GoogleMap
         zoom={zoom}
         center={center}
         mapContainerClassName='map-container'
-        options={{mapTypeId: "SATELLITE"}}
+        options={{
+          mapTypeControl: false,
+          streetViewControl: false,
+          mapTypeId: 'hybrid'
+        }}
+      
+        // scaleControl: boolean,
+        // streetViewControl: boolean,
+        // rotateControl: boolean,
+        // fullscreenControl: boolean
+        
         >
+        <LakeFilterBox/>
       {/* <StandaloneSearchBox
           // onLoad={onLoad}
           // onPlacesChanged={
@@ -122,14 +158,54 @@ export function Map() {
           />
         </StandaloneSearchBox> */}
 
+{/* 
+      <Autocomplete
+
+          >
+            <input
+              type="text"
+              placeholder="Customized your placeholder"
+              style={{
+                boxSizing: `border-box`,
+                border: `1px solid transparent`,
+                width: `240px`,
+                height: `32px`,
+                padding: `0 12px`,
+                borderRadius: `3px`,
+                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                fontSize: `14px`,
+                outline: `none`,
+                textOverflow: `ellipses`,
+                position: "absolute",
+                left: "50%",
+                marginLeft: "-120px"
+              }}
+            />
+      </Autocomplete> */}
 
 {/* 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' */}
-
+        isLoading ? <div>Loading weather data..</div> : null 
         <MarkerClusterer 
-          options={{ 
-            imagePath: process.env.PUBLIC_URL + `/cluster`,
-            imageExtension: "png"
-          }}
+          styles={clusterStyles }
+          // styles={{
+          //     url: "",
+          //     // className?: string;
+          //     // height: number;
+          //     // width: number;
+          //     // anchorText?: number[];
+          //     // anchorIcon?: number[];
+          //     textColor: "white"
+          //     // textSize?: number;
+          //     // textDecoration?: string;
+          //     // fontWeight?: string;
+          //     // fontStyle?: string;
+          //     // fontFamily?: string;
+          //     // backgroundPosition?: string;
+          // }}
+          // options={{ 
+          //   imagePath: process.env.PUBLIC_URL + `/cluster`,
+          //   imageExtension: "png"
+          // }}
         >
           {(clusterer) =>
             lakeWeatherReports.map(lake_weather_report => 

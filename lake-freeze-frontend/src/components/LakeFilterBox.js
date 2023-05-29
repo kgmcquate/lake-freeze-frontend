@@ -1,10 +1,10 @@
 import Slider from '@mui/material/Slider';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
+// import Card from '@mui/material/Card';
+// import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 // import Container from 'react-bootstrap/Container';
 // import Form from 'react-bootstrap/Form';

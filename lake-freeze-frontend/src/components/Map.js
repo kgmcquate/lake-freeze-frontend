@@ -106,7 +106,7 @@ export function Map() {
     setIsLoading(true)
 
     fetchLakes()
-  }, []);
+  }, [fetchLakes]);
 
   const clusterer = <MarkerClusterer></MarkerClusterer>
   console.log(clusterer)

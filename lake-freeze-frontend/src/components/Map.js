@@ -1,4 +1,4 @@
-import {GoogleMap, MarkerClusterer, Autocomplete} from '@react-google-maps/api';
+import {GoogleMap, MarkerClusterer} from '@react-google-maps/api';
 
 import {useState, useEffect} from 'react';
 

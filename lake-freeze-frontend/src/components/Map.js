@@ -11,7 +11,8 @@ import './Map.css'
 const getAvg = (arr) => arr.reduce((a, b) => a + b) / arr.length
 
 
-const LAKE_COUNT_LIMIT = 200
+export const DEFAULT_LAKE_COUNT_LIMIT = 200
+export const MAX_LAKE_COUNT_LIMIT = 500
 
 
 const clusterStyles = [1,2,3].map(x => {return {  
@@ -33,86 +34,97 @@ export function Map() {
   // const [bounds, setBounds] = useState([])
   const [isLoading, setIsLoading] =  useState(true)
 
+  const [lakeCountLimit, setLakeCountLimit] = useState(DEFAULT_LAKE_COUNT_LIMIT)
+
+  async function fetchLakes() {
+    const response = await fetch(        
+      process.env.REACT_APP_LAKES_API_URL + "/lakes?" + new URLSearchParams({
+        limit: lakeCountLimit
+      })
+    )
+
+    const lakes = await response.json() //testData //
+  
+    const avgLat =  getAvg(lakes.map(lake => {return lake.latitude}))
+    const avgLng = getAvg(lakes.map(lake => {return lake.longitude}))
+    console.log("avg lat: " + avgLat)
+    console.log("avg lng: " + avgLng)
+
+    
+    if (!isNaN(avgLat) && !isNaN(avgLng)) {
+      setCenter({lat: avgLat, lng: avgLng})
+    }
+  
+    // setLakes(lakes)
+
+    console.log(lakes)
+
+    console.log(lakes.map(lake => lake.latitude))
+
+    const minLat = Math.min(...lakes.map(lake => lake.latitude))
+    const minLng = Math.min(...lakes.map(lake => lake.longitude))
+    const maxLat = Math.max(...lakes.map(lake => lake.latitude))
+    const maxLng = Math.max(...lakes.map(lake => lake.longitude))
+
+    console.log("minLat: " + minLat)
+    console.log("maxLat: " + maxLat)
+    console.log("maxLng: " + maxLng)
+
+   //TODO  make the lake and the weather report asynchronous
+      
+    const weatherReportResponse = await fetch(        
+      process.env.REACT_APP_LAKES_API_URL + "/lake_weather_reports?" + new URLSearchParams({
+        // date: ,
+        lake_ids: lakes.map(lake => lake.id).join(","),
+        // min_surface_area: Optional[float] = None,
+        // max_surface_area: Optional[float] = None,
+        min_latitude: minLat,
+        max_latitude: maxLat,
+        min_longitude: minLng,
+        max_longitude: maxLng,
+        limit: lakeCountLimit
+      })
+    )
+
+    const reportsData =  await weatherReportResponse.json()
+
+    setlakeWeatherReports(
+      reportsData
+    )
+
+    setIsLoading(false)
+
+    // setBounds(
+    //   new window.google.maps.LatLngBounds(
+    //     window.google.maps.LatLng(minLat, minLng),
+    //     window.google.maps.LatLng(maxLat, maxLng)
+    //   )
+    // )
+  }
 
   useEffect(() => {
     setIsLoading(true)
 
-    async function fetchLakes() {
-      const response = await fetch(        
-        process.env.REACT_APP_LAKES_API_URL + "/lakes?" + new URLSearchParams({
-          limit: LAKE_COUNT_LIMIT
-        })
-      )
-
-      const lakes = await response.json() //testData //
-    
-      const avgLat =  getAvg(lakes.map(lake => {return lake.latitude}))
-      const avgLng = getAvg(lakes.map(lake => {return lake.longitude}))
-      console.log("avg lat: " + avgLat)
-      console.log("avg lng: " + avgLng)
-
-      
-      if (!isNaN(avgLat) && !isNaN(avgLng)) {
-        setCenter({lat: avgLat, lng: avgLng})
-      }
-    
-      // setLakes(lakes)
-
-      console.log(lakes)
-
-      console.log(lakes.map(lake => lake.latitude))
-
-      const minLat = Math.min(...lakes.map(lake => lake.latitude))
-      const minLng = Math.min(...lakes.map(lake => lake.longitude))
-      const maxLat = Math.max(...lakes.map(lake => lake.latitude))
-      const maxLng = Math.max(...lakes.map(lake => lake.longitude))
-
-      console.log("minLat: " + minLat)
-      console.log("maxLat: " + maxLat)
-      console.log("maxLng: " + maxLng)
-
-     //TODO  make the lake and the weather report asynchronous
-        
-      const weatherReportResponse = await fetch(        
-        process.env.REACT_APP_LAKES_API_URL + "/lake_weather_reports?" + new URLSearchParams({
-          // date: ,
-          lake_ids: lakes.map(lake => lake.id).join(","),
-          // min_surface_area: Optional[float] = None,
-          // max_surface_area: Optional[float] = None,
-          min_latitude: minLat,
-          max_latitude: maxLat,
-          min_longitude: minLng,
-          max_longitude: maxLng,
-          limit: LAKE_COUNT_LIMIT
-        })
-      )
-
-      const reportsData =  await weatherReportResponse.json()
-
-      setlakeWeatherReports(
-        reportsData
-      )
-
-      setIsLoading(false)
-
-      // setBounds(
-      //   new window.google.maps.LatLngBounds(
-      //     window.google.maps.LatLng(minLat, minLng),
-      //     window.google.maps.LatLng(maxLat, maxLng)
-      //   )
-      // )
-    }
-
     fetchLakes()
-
-
   }, []);
 
   const clusterer = <MarkerClusterer></MarkerClusterer>
   console.log(clusterer)
 
+  const onLimitChange = (value) => {
+    setLakeCountLimit(value)
+    fetchLakes()
+  }
+
+  // useEffect(() => {
+  //   const timeOutId = setTimeout(() => setLakeCountLimit(value), 500);
+  //   fetchLakes()
+
+  //   return () => clearTimeout(timeOutId);
+  // }, []);
+
   return (
-    <div>      
+    <div>
 
       <GoogleMap
         zoom={zoom}
@@ -130,7 +142,9 @@ export function Map() {
         // fullscreenControl: boolean
         
         >
-        <LakeFilterBox/>
+        <LakeFilterBox
+          onLimitChange={onLimitChange}
+        />
       {/* <StandaloneSearchBox
           // onLoad={onLoad}
           // onPlacesChanged={
@@ -184,7 +198,7 @@ export function Map() {
       </Autocomplete> */}
 
 {/* 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' */}
-        isLoading ? <div>Loading weather data..</div> : null 
+        {isLoading} ? <div>Loading weather data..</div> : null 
         <MarkerClusterer 
           styles={clusterStyles }
           // styles={{

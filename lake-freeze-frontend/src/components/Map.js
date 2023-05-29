@@ -1,6 +1,6 @@
 import {GoogleMap, MarkerClusterer} from '@react-google-maps/api';
 
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 
 import { LakeMarker } from './LakeMarker';
 
@@ -32,100 +32,78 @@ export function Map() {
   // const [zoom, setZoom] = useState([10])
   const zoom = 7
   // const [bounds, setBounds] = useState([])
-  const [isLoading, setIsLoading] =  useState(true)
 
   const [lakeCountLimit, setLakeCountLimit] = useState(DEFAULT_LAKE_COUNT_LIMIT)
+  // const lakeCountLimit = DEFAULT_LAKE_COUNT_LIMIT
 
-  async function fetchLakes() {
-    const response = await fetch(        
-      process.env.REACT_APP_LAKES_API_URL + "/lakes?" + new URLSearchParams({
-        limit: lakeCountLimit
-      })
-    )
+  useEffect(() => {
+    async function fetchLakes() {
+      const response = await fetch(        
+        process.env.REACT_APP_LAKES_API_URL + "/lakes?" + new URLSearchParams({
+          limit: lakeCountLimit
+        })
+      )
 
-    const lakes = await response.json() //testData //
-  
-    const avgLat =  getAvg(lakes.map(lake => {return lake.latitude}))
-    const avgLng = getAvg(lakes.map(lake => {return lake.longitude}))
-    console.log("avg lat: " + avgLat)
-    console.log("avg lng: " + avgLng)
-
+      const lakes = await response.json() //testData //
     
-    if (!isNaN(avgLat) && !isNaN(avgLng)) {
-      setCenter({lat: avgLat, lng: avgLng})
-    }
-  
-    // setLakes(lakes)
+      const avgLat =  getAvg(lakes.map(lake => {return lake.latitude}))
+      const avgLng = getAvg(lakes.map(lake => {return lake.longitude}))
+      console.log("avg lat: " + avgLat)
+      console.log("avg lng: " + avgLng)
 
-    console.log(lakes)
-
-    console.log(lakes.map(lake => lake.latitude))
-
-    const minLat = Math.min(...lakes.map(lake => lake.latitude))
-    const minLng = Math.min(...lakes.map(lake => lake.longitude))
-    const maxLat = Math.max(...lakes.map(lake => lake.latitude))
-    const maxLng = Math.max(...lakes.map(lake => lake.longitude))
-
-    console.log("minLat: " + minLat)
-    console.log("maxLat: " + maxLat)
-    console.log("maxLng: " + maxLng)
-
-   //TODO  make the lake and the weather report asynchronous
       
-    const weatherReportResponse = await fetch(        
-      process.env.REACT_APP_LAKES_API_URL + "/lake_weather_reports?" + new URLSearchParams({
-        // date: ,
-        lake_ids: lakes.map(lake => lake.id).join(","),
-        // min_surface_area: Optional[float] = None,
-        // max_surface_area: Optional[float] = None,
-        min_latitude: minLat,
-        max_latitude: maxLat,
-        min_longitude: minLng,
-        max_longitude: maxLng,
-        limit: lakeCountLimit
-      })
-    )
+      if (!isNaN(avgLat) && !isNaN(avgLng)) {
+        setCenter({lat: avgLat, lng: avgLng})
+      }
+    
+      // setLakes(lakes)
 
-    const reportsData =  await weatherReportResponse.json()
+      console.log(lakes)
 
-    setlakeWeatherReports(
-      reportsData
-    )
+      console.log(lakes.map(lake => lake.latitude))
 
-    setIsLoading(false)
+      const minLat = Math.min(...lakes.map(lake => lake.latitude))
+      const minLng = Math.min(...lakes.map(lake => lake.longitude))
+      const maxLat = Math.max(...lakes.map(lake => lake.latitude))
+      const maxLng = Math.max(...lakes.map(lake => lake.longitude))
 
-    // setBounds(
-    //   new window.google.maps.LatLngBounds(
-    //     window.google.maps.LatLng(minLat, minLng),
-    //     window.google.maps.LatLng(maxLat, maxLng)
-    //   )
-    // )
-  }
+      console.log("minLat: " + minLat)
+      console.log("maxLat: " + maxLat)
+      console.log("maxLng: " + maxLng)
 
-  // useEffect(() => {
-  //   setIsLoading(true)
+    //TODO  make the lake and the weather report asynchronous
+        
+      const weatherReportResponse = await fetch(        
+        process.env.REACT_APP_LAKES_API_URL + "/lake_weather_reports?" + new URLSearchParams({
+          // date: ,
+          lake_ids: lakes.map(lake => lake.id).join(","),
+          // min_surface_area: Optional[float] = None,
+          // max_surface_area: Optional[float] = None,
+          min_latitude: minLat,
+          max_latitude: maxLat,
+          min_longitude: minLng,
+          max_longitude: maxLng,
+          limit: lakeCountLimit
+        })
+      )
 
-  //   fetchLakes()
-  // }, [fetchLakes]);
+      const reportsData =  await weatherReportResponse.json()
 
-  const clusterer = <MarkerClusterer></MarkerClusterer>
-  console.log(clusterer)
+      setlakeWeatherReports(
+        reportsData
+      )
+    }
+
+    fetchLakes()
+  }, [lakeCountLimit]);
 
   const onLimitChange = (value) => {
+    //TODO add debouncing
     setLakeCountLimit(value)
-    fetchLakes()
   }
-
-  // useEffect(() => {
-  //   const timeOutId = setTimeout(() => setLakeCountLimit(value), 500);
-  //   fetchLakes()
-
-  //   return () => clearTimeout(timeOutId);
-  // }, []);
 
   return (
     <div>
-
       <GoogleMap
         zoom={zoom}
         center={center}
@@ -135,91 +113,12 @@ export function Map() {
           streetViewControl: false,
           mapTypeId: 'hybrid'
         }}
-      
-        // scaleControl: boolean,
-        // streetViewControl: boolean,
-        // rotateControl: boolean,
-        // fullscreenControl: boolean
-        
-        >
+      >
         <LakeFilterBox
           onLimitChange={onLimitChange}
         />
-      {/* <StandaloneSearchBox
-          // onLoad={onLoad}
-          // onPlacesChanged={
-          //   onPlacesChanged
-          // }
-        >
-          <input
-            type="text"
-            placeholder="Customized your placeholder"
-            style={{
-              boxSizing: `border-box`,
-              border: `1px solid transparent`,
-              width: `240px`,
-              height: `32px`,
-              padding: `0 12px`,
-              borderRadius: `3px`,
-              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
-              outline: `none`,
-              textOverflow: `ellipses`,
-              position: "absolute",
-              left: "50%",
-              marginLeft: "-120px"
-            }}
-          />
-        </StandaloneSearchBox> */}
-
-{/* 
-      <Autocomplete
-
-          >
-            <input
-              type="text"
-              placeholder="Customized your placeholder"
-              style={{
-                boxSizing: `border-box`,
-                border: `1px solid transparent`,
-                width: `240px`,
-                height: `32px`,
-                padding: `0 12px`,
-                borderRadius: `3px`,
-                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                fontSize: `14px`,
-                outline: `none`,
-                textOverflow: `ellipses`,
-                position: "absolute",
-                left: "50%",
-                marginLeft: "-120px"
-              }}
-            />
-      </Autocomplete> */}
-
-{/* 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' */}
-        {isLoading} ? <div>Loading weather data..</div> : null 
         <MarkerClusterer 
           styles={clusterStyles }
-          // styles={{
-          //     url: "",
-          //     // className?: string;
-          //     // height: number;
-          //     // width: number;
-          //     // anchorText?: number[];
-          //     // anchorIcon?: number[];
-          //     textColor: "white"
-          //     // textSize?: number;
-          //     // textDecoration?: string;
-          //     // fontWeight?: string;
-          //     // fontStyle?: string;
-          //     // fontFamily?: string;
-          //     // backgroundPosition?: string;
-          // }}
-          // options={{ 
-          //   imagePath: process.env.PUBLIC_URL + `/cluster`,
-          //   imageExtension: "png"
-          // }}
         >
           {(clusterer) =>
             lakeWeatherReports.map(lake_weather_report => 
@@ -234,6 +133,4 @@ export function Map() {
       </GoogleMap>
     </div>
   )
-  
-
 }

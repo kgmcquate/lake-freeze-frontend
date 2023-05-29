@@ -102,11 +102,11 @@ export function Map() {
     // )
   }
 
-  useEffect(() => {
-    setIsLoading(true)
+  // useEffect(() => {
+  //   setIsLoading(true)
 
-    fetchLakes()
-  }, [fetchLakes]);
+  //   fetchLakes()
+  // }, [fetchLakes]);
 
   const clusterer = <MarkerClusterer></MarkerClusterer>
   console.log(clusterer)

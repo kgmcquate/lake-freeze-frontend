@@ -16,7 +16,7 @@ export function LakeInfoBox({lake_weather_report}) {
         <InfoWindow
                 position={{ lat: lake_weather_report.latitude, lng: lake_weather_report.longitude }} 
         >
-            <div >
+            <div style={{fontFamily: ["Roboto"]}} >
                 <h2>{ formatLakeName(lake_weather_report.lake_name) }</h2>
                 <ul>
                     <li>Date: {lake_weather_report.date}</li>

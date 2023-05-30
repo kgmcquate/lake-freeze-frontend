@@ -16,7 +16,7 @@ import './LakeFilterBox'
 import {DEFAULT_LAKE_COUNT_LIMIT, MAX_LAKE_COUNT_LIMIT} from './Map'
 
 
-const Widget = styled('div')(({ theme }) => ({
+export const Widget = styled('div')(({ theme }) => ({
     display: "flex",
     padding: "3%",
     borderRadius: 16,

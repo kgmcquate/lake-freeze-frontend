@@ -102,6 +102,8 @@ export function Map() {
     setLakeCountLimit(value)
   }
 
+  // const mapStyles = [1,2,3].map(x => {fontFamily: ["Roboto"]})
+
   return (
     <div>
       <GoogleMap
@@ -111,7 +113,9 @@ export function Map() {
         options={{
           mapTypeControl: false,
           streetViewControl: false,
-          mapTypeId: 'hybrid'
+          mapTypeId: 'hybrid',
+          backgroundColor: "black",
+          styles: [{fontFamily: ["Roboto"], featureType: "hybrid"}]
         }}
       >
         <LakeFilterBox

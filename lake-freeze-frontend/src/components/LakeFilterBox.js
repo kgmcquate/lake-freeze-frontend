@@ -1,6 +1,5 @@
 import Slider from '@mui/material/Slider';
 
-
 import './LakeFilterBox.css'
 
 import {DEFAULT_LAKE_COUNT_LIMIT, MAX_LAKE_COUNT_LIMIT} from './Map'

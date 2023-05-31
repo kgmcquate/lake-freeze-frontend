@@ -2,27 +2,27 @@
   text-align: center;
 }
 
-a {
+/* a {
   color: inherit;
   text-decoration: none;
-}
+} */
 
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
 
-.combobox-input {
+/* .combobox-input {
   width: 100%;
   padding: 0.5rem;
-}
+} */
 
-.lake-icon {
+/* .lake-icon {
   font-size: 2rem;
   color: blue;
-}
+} */
 
-.location-info {
+/* .location-info {
   position: absolute;
   top: 80px;
   right: 50px;
@@ -33,4 +33,4 @@ a {
   border-radius: 10px;
   font-size: 18px;
   color: #fff;
-}
+} */

@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { InfoWindow } from '@react-google-maps/api';
 import './styles/LakeInfoBox.css';
 
@@ -14,7 +16,7 @@ export function LakeInfoBox({ lake_weather_report }: { lake_weather_report: Lake
   return (
     <div className='lake-info-box'>
       <InfoWindow
-        className='lake-info-box'
+        // className='lake-info-box'
         position={{ lat: lake_weather_report.latitude, lng: lake_weather_report.longitude }}
       >
         <div style={{ fontFamily: "Roboto" }}>

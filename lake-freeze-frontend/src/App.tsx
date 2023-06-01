@@ -8,7 +8,7 @@
 import React from 'react';
 import './App.css';
 import { useLoadScript, LoadScript, LoadScriptProps } from '@react-google-maps/api';
-import { Map } from "./components/Map";
+import Map from "./components/Map";
 
 // TODO: Add filter sliders for depth, area, limit
 // TODO: Add markers for frozen/no frozen
@@ -21,7 +21,7 @@ const googleMapsLibraries: ("places")[] = ["places"];
 
 const googleMapsApiKey: string | undefined = process.env.REACT_APP_GOOGLE_MAPS_API_KEY!;
 
-const App: React.FC = () => {
+const App: React.FunctionComponent = () => {
   // Load Google Maps API script
   const { isLoaded }: { isLoaded: boolean } = useLoadScript({
     googleMapsApiKey,

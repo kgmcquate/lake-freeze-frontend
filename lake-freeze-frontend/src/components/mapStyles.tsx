@@ -1,5 +1,5 @@
 
-const mapStyles = [
+export const mapStyles = [
     {
         "featureType": "all",
         "elementType": "labels.text.fill",

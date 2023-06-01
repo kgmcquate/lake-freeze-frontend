@@ -1,6 +1,8 @@
+import React from 'react'
+
 import {GoogleMap, MarkerClusterer } from '@react-google-maps/api';
 
-import { Clusterer } from '@react-google-maps/marker-clusterer/';
+// import { Clusterer } from '@react-google-maps/marker-clusterer/';
 
 import { useState, useEffect } from 'react';
 
@@ -39,7 +41,7 @@ const clusterStyles = [1,2,3].map(x => {return {
   }}
 )
 
-export function Map() {
+const Map: React.FunctionComponent = () => {
   const [lakeWeatherReports, setLakeWeatherReports] = useState<LakeWeatherReport[]>([]);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const zoom = DEFAULT_ZOOM;
@@ -112,17 +114,25 @@ export function Map() {
           onLimitChange={onLimitChange}
         />
         <MarkerClusterer styles={clusterStyles}>
-          {(clusterer) =>
-            lakeWeatherReports.map((lake_weather_report) =>
-              <LakeMarker
-                key={lake_weather_report.lake_id}
-                lake_weather_report={lake_weather_report}
-                clusterer={clusterer}
-              />
-            )
+          {
+          (clusterer) =>
+            <div>
+              {
+                lakeWeatherReports?.map(
+                  (lake_weather_report) => 
+                    <LakeMarker 
+                      key={lake_weather_report.lake_id} 
+                      lake_weather_report={lake_weather_report} 
+                      clusterer={clusterer}
+                    />
+                )
+              }
+            </div>
           }
         </MarkerClusterer>
       </GoogleMap>
     </div>
   );
-}
+};
+
+export default Map;

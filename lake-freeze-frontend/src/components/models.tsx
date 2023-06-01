@@ -3,7 +3,7 @@
 // Define datetime type as string
 type DateTime = string
 
-interface Lake {
+export interface Lake {
     id?: number;
     lake_name: string;
     latitude?: number;
@@ -17,7 +17,7 @@ interface Lake {
     surface_area_m2?: number;
   }
   
-  interface WeatherByDay {
+  export interface WeatherByDay {
     date: DateTime;
     latitude: number;
     longitude: number;
@@ -35,7 +35,7 @@ interface Lake {
     last_updated_ts?: DateTime;
   }
   
-  interface LakeWeatherReport {
+  export interface LakeWeatherReport {
     lake_id: number;
     date: DateTime;
     ice_alg_version: string;

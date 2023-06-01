@@ -1,8 +1,7 @@
 
-
 import CircularProgress from '@mui/material/CircularProgress';
 
-import './LoadingBox.css'
+import './styles/LoadingBox.css'
 
 export function LoadingBox() {
     return (

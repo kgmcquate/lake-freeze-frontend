@@ -27,7 +27,7 @@ export function LakeMarker({
   clusterer
 }: {
   lake_weather_report: LakeWeatherReport;
-  clusterer: Clusterer;
+  clusterer?: Clusterer;
 }) {
   const [lakeMarkerInfo, setLakeMarkerInfo] = useState<LakeWeatherReport | null>(null);
 

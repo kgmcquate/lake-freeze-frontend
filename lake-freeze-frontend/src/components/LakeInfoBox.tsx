@@ -5,6 +5,12 @@ import '../styles/LakeInfoBox.css';
 
 import { LakeWeatherReport } from './models'
 
+/**
+ * Formats the lake name to be human readable.
+ *
+ * @param lakeName - The name of the lake.
+ * @returns The formatted lake name.
+ */
 const formatLakeName = (lakeName: string) => {
   return lakeName
     .split(" ")
@@ -12,11 +18,19 @@ const formatLakeName = (lakeName: string) => {
     .join(" ") + " Lake";
 };
 
+
+/**
+ * LakeInfoBox component displays additional information about a lake in an InfoWindow.
+ * It shows the lake's name, date, meters of ice, and position.
+ *
+ * @param lake_weather_report - The weather report data for the lake.
+ */
 export function LakeInfoBox({ lake_weather_report }: { lake_weather_report: LakeWeatherReport }) {
+
+
   return (
     <div className='lake-info-box'>
       <InfoWindow
-        // className='lake-info-box'
         position={{ lat: lake_weather_report.latitude, lng: lake_weather_report.longitude }}
       >
         <div style={{ fontFamily: "Roboto" }}>

@@ -1,46 +1,27 @@
-import React from 'react'
-
-import {GoogleMap, MarkerClusterer } from '@react-google-maps/api';
-
-// import { Clusterer } from '@react-google-maps/marker-clusterer/';
-
+import React from 'react';
+import { GoogleMap, MarkerClusterer } from '@react-google-maps/api';
 import { useState, useEffect } from 'react';
-
 import { LakeMarker } from './LakeMarker';
+import { LakeFilterBox } from './LakeFilterBox';
+import { LoadingBox } from './LoadingBox';
+import { mapStyles, clusterStyles } from './mapStyles';
+import { Lake, LakeWeatherReport } from './models';
+import '../styles/Map.css';
 
-import { LakeFilterBox } from './LakeFilterBox'
+/**
+ * Calculates the average value of an array.
+ * @param arr - Array of numbers
+ * @returns Average value
+ */
+const getAvg = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.length;
 
-import { LoadingBox } from './LoadingBox'
+export const DEFAULT_LAKE_COUNT_LIMIT = 200;
+export const MAX_LAKE_COUNT_LIMIT = 500;
+const DEFAULT_ZOOM = 7;
 
-import { mapStyles } from './mapStyles'
-
-import { Lake, LakeWeatherReport } from './models'
-
-import '../styles/Map.css'
-
-// TODO: Add filter sliders for depth, area, limit
-// TODO: Add markers for frozen/no frozen
-// TODO: Add marker clustering
-// TODO: Add info for markers
-// TODO: Add search this area
-
-const getAvg = (arr: number[]) => arr.reduce((a, b) => a + b) / arr.length;
-
-
-
-export const DEFAULT_LAKE_COUNT_LIMIT = 200
-export const MAX_LAKE_COUNT_LIMIT = 500
-const DEFAULT_ZOOM = 7
-
-
-const clusterStyles = [1,2,3].map(x => {return {  
-    height: x*32, 
-    width: x*32,
-    textColor: '#ffffff', 
-    url: process.env.PUBLIC_URL + `/icons8-circle-96.png`
-  }}
-)
-
+/**
+ * Map component responsible for displaying the Google Map and markers.
+ */
 const Map: React.FunctionComponent = () => {
   const [lakeWeatherReports, setLakeWeatherReports] = useState<LakeWeatherReport[]>([]);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
@@ -55,7 +36,7 @@ const Map: React.FunctionComponent = () => {
       // Fetch lakes
       const response = await fetch(
         `${process.env.REACT_APP_LAKES_API_URL}/lakes?${new URLSearchParams({
-          limit: lakeCountLimit.toString()
+          limit: lakeCountLimit.toString(),
         })}`
       );
       const lakes: Lake[] = await response.json();
@@ -73,14 +54,14 @@ const Map: React.FunctionComponent = () => {
 
       // Fetch weather reports
       const weatherReportResponse = await fetch(
-        process.env.REACT_APP_LAKES_API_URL + "/lake_weather_reports?" + new URLSearchParams({
+        `${process.env.REACT_APP_LAKES_API_URL}/lake_weather_reports?${new URLSearchParams({
           lake_ids: lakes.map((lake) => lake.id).join(","),
           min_latitude: minLat.toString(),
           max_latitude: maxLat.toString(),
           min_longitude: minLng.toString(),
           max_longitude: maxLng.toString(),
-          limit: lakeCountLimit.toString()
-        })
+          limit: lakeCountLimit.toString(),
+        })}`
       );
       const reportsData: LakeWeatherReport[] = await weatherReportResponse.json();
 
@@ -91,6 +72,10 @@ const Map: React.FunctionComponent = () => {
     fetchLakes();
   }, [lakeCountLimit]);
 
+  /**
+   * Event handler for the limit change in the LakeFilterBox component.
+   * @param value - New limit value
+   */
   const onLimitChange = (value: number) => {
     setLakeCountLimit(value);
   };
@@ -102,33 +87,27 @@ const Map: React.FunctionComponent = () => {
         center={center}
         mapContainerClassName="map-container"
         options={{
-          mapTypeControl: false,
+          mapTypeControl: false, //Remove ability to change map type
           streetViewControl: false,
-          mapTypeId: 'hybrid',
-          backgroundColor: "black",
-          styles: mapStyles
+          mapTypeId: 'hybrid', // hybrid is satellite images with streets and stuff overlaid
+          backgroundColor: 'black',
+          styles: mapStyles,
         }}
       >
         {loading ? <LoadingBox /> : null}
-        <LakeFilterBox
-          onLimitChange={onLimitChange}
-        />
+        <LakeFilterBox onLimitChange={onLimitChange} />
         <MarkerClusterer styles={clusterStyles}>
-          {
-          (clusterer) =>
+          {(clusterer) => (
             <div>
-              {
-                lakeWeatherReports?.map(
-                  (lake_weather_report) => 
-                    <LakeMarker 
-                      key={lake_weather_report.lake_id} 
-                      lake_weather_report={lake_weather_report} 
-                      clusterer={clusterer}
-                    />
-                )
-              }
+              {lakeWeatherReports?.map((lake_weather_report) => (
+                <LakeMarker
+                  key={lake_weather_report.lake_id}
+                  lake_weather_report={lake_weather_report}
+                  clusterer={clusterer}
+                />
+              ))}
             </div>
-          }
+          )}
         </MarkerClusterer>
       </GoogleMap>
     </div>

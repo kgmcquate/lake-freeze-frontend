@@ -11,29 +11,40 @@ import '../styles/LakeMarker.css'
 
 import { LakeWeatherReport } from './models'
 
-// const frozenIcon = 'bi:snow'
-
 const icePngUrl = "https://img.icons8.com/emoji/24/000000/ice.png";
 const waterPngUrl = "https://img.icons8.com/color/24/000000/water.png";
 
-export function LakeMarker({ lake_weather_report, clusterer }: { lake_weather_report: LakeWeatherReport; clusterer: Clusterer }) {
-    const [lakeMarkerInfo, setLakeMarkerInfo] = useState<LakeWeatherReport | null>(null);
+/**
+ * LakeMarker component represents a marker on the map for a lake.
+ * It displays different icons based on whether the lake is frozen or not.
+ * When hovered over, it shows additional information in a LakeInfoBox.
+ *
+ * @param lake_weather_report - The weather report data for the lake.
+ * @param clusterer - The clusterer for marker clustering.
+ */
+export function LakeMarker({
+  lake_weather_report,
+  clusterer
+}: {
+  lake_weather_report: LakeWeatherReport;
+  clusterer: Clusterer;
+}) {
+  const [lakeMarkerInfo, setLakeMarkerInfo] = useState<LakeWeatherReport | null>(null);
 
-    return (
-      <MarkerF
-        // className={"LakeMarker"}
-        position={{ lat: lake_weather_report.latitude, lng: lake_weather_report.longitude }}
-        icon={{
-          url: lake_weather_report.is_frozen ? icePngUrl : waterPngUrl
-        }}
-        onMouseOver={() => setLakeMarkerInfo(lake_weather_report)}
-        onMouseOut={() => setLakeMarkerInfo(null)}
-        clusterer={clusterer}
-      >
-        {lakeMarkerInfo && <LakeInfoBox lake_weather_report={lakeMarkerInfo} />}
-      </MarkerF>
-    );
-  }
+  return (
+    <MarkerF
+      position={{ lat: lake_weather_report.latitude, lng: lake_weather_report.longitude }}
+      icon={{
+        url: lake_weather_report.is_frozen ? icePngUrl : waterPngUrl
+      }}
+      onMouseOver={() => setLakeMarkerInfo(lake_weather_report)}
+      onMouseOut={() => setLakeMarkerInfo(null)}
+      clusterer={clusterer}
+    >
+      {lakeMarkerInfo && <LakeInfoBox lake_weather_report={lakeMarkerInfo} />}
+    </MarkerF>
+  );
+}
   
   
 

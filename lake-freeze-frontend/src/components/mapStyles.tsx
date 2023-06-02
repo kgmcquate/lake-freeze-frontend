@@ -1,4 +1,13 @@
 
+export const clusterStyles = [1,2,3].map(x => {return {  
+    height: x*32, 
+    width: x*32,
+    textColor: '#ffffff', 
+    url: process.env.PUBLIC_URL + `/icons8-circle-96.png`
+  }}
+)
+
+//Styling for the Google Map component.  new styles can be generated here: https://snazzymaps.com/
 export const mapStyles = [
     {
         "featureType": "all",

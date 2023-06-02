@@ -7,7 +7,7 @@
 
 import React from 'react';
 import './styles/App.css';
-import { useLoadScript, LoadScript, LoadScriptProps } from '@react-google-maps/api';
+import { useLoadScript } from '@react-google-maps/api';
 import Map from "./components/Map";
 
 // TODO: Add filter sliders for depth, area, limit

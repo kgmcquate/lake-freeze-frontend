@@ -89,26 +89,6 @@ Resources:
       CloudFrontOriginAccessIdentityConfig:
         Comment: 'Access S3 bucket content only through CloudFront'
 
-# Outputs:
-#   S3BucketName:
-#     Description: 'Bucket name'
-#     Value: !Ref S3BucketName
-#   CfDistributionWithOAI:
-#     Description: 'Id for our cloudfront distribution'
-#     Value: !Ref CfDistributionWithAOI
-#     Condition: WithOAIEnabled
-#   CfDistributionId:
-#     Description: 'Id for our cloudfront distribution'
-#     Value: !Ref CfDistribution
-#     Condition: WithOutOAIEnabled
-#   CfDistributionDomainNameWithOAI:
-#     Description: 'Domain name for our cloudfront distribution'
-#     Value: !GetAtt CfDistributionWithAOI.DomainName
-#     Condition: WithOAIEnabled
-#   CfDistributionDomainName:
-#     Description: 'Domain name for our cloudfront distribution'
-#     Value: !GetAtt CfDistribution.DomainName
-#     Condition: WithOutOAIEnabled
 
 
     

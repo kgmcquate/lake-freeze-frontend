@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Slider from '@mui/material/Slider';
-import './styles/LakeFilterBox.css';
+import '../styles/LakeFilterBox.css';
 import { DEFAULT_LAKE_COUNT_LIMIT, MAX_LAKE_COUNT_LIMIT } from './Map';
 
 export function LakeFilterBox({ onLimitChange }: { onLimitChange: (value: number) => void }) {

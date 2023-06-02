@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { InfoWindow } from '@react-google-maps/api';
-import './styles/LakeInfoBox.css';
+import '../styles/LakeInfoBox.css';
 
 import { LakeWeatherReport } from './models'
 

@@ -7,7 +7,7 @@ import {useState} from 'react';
 
 import { LakeInfoBox } from './LakeInfoBox';
 
-import './styles/LakeMarker.css'
+import '../styles/LakeMarker.css'
 
 import { LakeWeatherReport } from './models'
 

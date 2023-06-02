@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import './App.css';
+import './styles/App.css';
 import { useLoadScript, LoadScript, LoadScriptProps } from '@react-google-maps/api';
 import Map from "./components/Map";
 

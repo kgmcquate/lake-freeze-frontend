@@ -16,7 +16,7 @@ import { mapStyles } from './mapStyles'
 
 import { Lake, LakeWeatherReport } from './models'
 
-import './styles/Map.css'
+import '../styles/Map.css'
 
 // TODO: Add filter sliders for depth, area, limit
 // TODO: Add markers for frozen/no frozen

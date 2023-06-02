@@ -2,7 +2,7 @@ import React from 'react'
 
 import CircularProgress from '@mui/material/CircularProgress';
 
-import './styles/LoadingBox.css'
+import '../styles/LoadingBox.css'
 
 export function LoadingBox() {
     return (

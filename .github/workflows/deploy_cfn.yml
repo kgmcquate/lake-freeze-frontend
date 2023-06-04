@@ -47,6 +47,20 @@ jobs:
     #     node-version: 18
     #     cache: 'npm'
     #     cache-dependency-path: lake-freeze-frontend/package-lock.json
+    - name: npm install
+      run: npm install 
+
+    - name: react app env file
+      run: |
+        echo REACT_APP_LAKES_API_URL="https://${API_DOMAIN_NAME}" >> .env
+        echo PUBLIC_URL="${PUBLIC_ZONE_PREFIX}" >> .env
+        echo REACT_APP_GOOGLE_MAPS_API_KEY="${REACT_APP_GOOGLE_MAPS_API_KEY}" >> .env
+
+    - name: React app deploy 
+      run: |
+        npm run build
+        aws s3 rm --recursive s3://${PUBLIC_ZONE_BUCKET_NAME}/${{ github.event.repository.name }}
+        aws s3 cp --recursive build/ s3://${PUBLIC_ZONE_BUCKET_NAME}/${{ github.event.repository.name }}
 
     - name: SAM build
       run: sam build
@@ -66,19 +80,7 @@ jobs:
         PublicS3BucketName=${PUBLIC_ZONE_BUCKET_NAME}
         PublicS3Prefix=${PUBLIC_ZONE_PREFIX}
 
+    # - name: Invalidate CloudFront cache
+    #   run: aws cloudfront create-invalidation
 
-    - name: npm install
-      run: npm install 
-
-    - name: react app env file
-      run: |
-        echo REACT_APP_LAKES_API_URL="https://${API_DOMAIN_NAME}" >> .env
-        echo PUBLIC_URL="${PUBLIC_ZONE_PREFIX}" >> .env
-        echo REACT_APP_GOOGLE_MAPS_API_KEY="${REACT_APP_GOOGLE_MAPS_API_KEY}" >> .env
-
-    - name: React app deploy 
-      run: |
-        npm run build
-        aws s3 rm --recursive s3://${PUBLIC_ZONE_BUCKET_NAME}/${{ github.event.repository.name }}
-        aws s3 cp --recursive build/ s3://${PUBLIC_ZONE_BUCKET_NAME}/${{ github.event.repository.name }}
 

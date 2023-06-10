@@ -13,8 +13,10 @@ This is a web application built with React that displays weather information for
 # Fullstack Architecture Diagram
 ```mermaid
 graph LR;
+  A[User] --> B
+
   subgraph Web Application
-    A[User] --> B[React Frontend]
+    B[React Frontend]
     B --> C[CloudFront]
     C --> D[S3 Bucket]
     B --> F[API Gateway]
@@ -27,9 +29,10 @@ graph LR;
 
   M[Climate Data Store API] --> L
 
-  subgraph ETL - TODO
-    K[Airflow on ECS] --> L[Spark on Lambda]
-    L --> I
+  subgraph ETL
+    K[EventBridge Schedule] --> L[StepFunction State Machine]
+    L --> M[Spark on EMR Serverless]
+    M --> J
     
   end
 

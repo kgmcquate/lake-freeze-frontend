@@ -27,8 +27,6 @@ graph LR;
 
   H --> J[Weather API]
 
-  M[Climate Data Store API] --> L
-
   subgraph ETL
     K[EventBridge Schedule] --> L[StepFunction State Machine]
     L --> M[Spark on EMR Serverless]

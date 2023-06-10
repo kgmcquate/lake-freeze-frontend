@@ -14,6 +14,8 @@ This is a web application built with React that displays weather information for
 ```mermaid
 graph LR;
   A[User] --> B
+  
+  J[Weather API]
 
   subgraph Web Application
     B[React Frontend]
@@ -23,9 +25,10 @@ graph LR;
     F --> G[AWS Lambda]
     G --> H[FastAPI Backend]
     H --> I[RDS Postgres]
+    H --> J
   end
 
-  H --> J[Weather API]
+  
 
   subgraph ETL
     K[EventBridge Schedule] --> L[StepFunction State Machine]

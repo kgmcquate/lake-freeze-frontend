@@ -31,19 +31,26 @@ export function LakeMarker({
 }) {
   const [lakeMarkerInfo, setLakeMarkerInfo] = useState<LakeWeatherReport | null>(null);
 
+  const latNum = Number(lake_weather_report.latitude)
+  const longNum = Number(lake_weather_report.longitude)
+
+  if (latNum == null || longNum == null) {
+    return null
+  }
+
   return (
-    <MarkerF
-      position={{ lat: Number(lake_weather_report.latitude), lng: Number(lake_weather_report.longitude) }}
-      icon={{
-        url: lake_weather_report.is_frozen ? icePngUrl : waterPngUrl
-      }}
-      onMouseOver={() => setLakeMarkerInfo(lake_weather_report)}
-      onMouseOut={() => setLakeMarkerInfo(null)}
-      clusterer={clusterer}
-    >
-      {lakeMarkerInfo && <LakeInfoBox lake_weather_report={lakeMarkerInfo} />}
-    </MarkerF>
-  );
+      <MarkerF
+        position={{ lat: latNum, lng: longNum }}
+        icon={{
+          url: lake_weather_report.is_frozen ? icePngUrl : waterPngUrl
+        }}
+        onMouseOver={() => setLakeMarkerInfo(lake_weather_report)}
+        onMouseOut={() => setLakeMarkerInfo(null)}
+        clusterer={clusterer}
+      >
+        {lakeMarkerInfo && <LakeInfoBox lake_weather_report={lakeMarkerInfo} />}
+      </MarkerF>
+    );
 }
   
   

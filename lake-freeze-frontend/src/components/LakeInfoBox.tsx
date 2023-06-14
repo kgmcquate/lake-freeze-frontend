@@ -31,7 +31,7 @@ export function LakeInfoBox({ lake_weather_report }: { lake_weather_report: Lake
   return (
     <div className='lake-info-box'>
       <InfoWindow
-        position={{ lat: lake_weather_report.latitude, lng: lake_weather_report.longitude }}
+        position={{ lat: Number(lake_weather_report.latitude), lng: Number(lake_weather_report.longitude) }}
       >
         <div style={{ fontFamily: "Roboto" }}>
           <h2>{formatLakeName(lake_weather_report.lake_name)}</h2>

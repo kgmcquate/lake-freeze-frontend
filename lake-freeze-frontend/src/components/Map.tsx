@@ -41,16 +41,16 @@ const Map: React.FunctionComponent = () => {
       );
       const lakes: Lake[] = await response.json();
 
-      const avgLat = getAvg(lakes.map((lake) => lake.latitude || 0));
-      const avgLng = getAvg(lakes.map((lake) => lake.longitude || 0));
+      const avgLat = getAvg(lakes.map((lake) =>  Number(lake.latitude) || 0));
+      const avgLng = getAvg(lakes.map((lake) =>  Number(lake.longitude) || 0));
       if (!isNaN(avgLat) && !isNaN(avgLng)) {
         setCenter({ lat: avgLat, lng: avgLng });
       }
 
-      const minLat = Math.min(...lakes.map((lake) => lake.latitude || 0));
-      const minLng = Math.min(...lakes.map((lake) => lake.longitude || 0));
-      const maxLat = Math.max(...lakes.map((lake) => lake.latitude || 0));
-      const maxLng = Math.max(...lakes.map((lake) => lake.longitude || 0));
+      const minLat = Math.min(...lakes.map((lake) => Number(lake.latitude) || 0));
+      const minLng = Math.min(...lakes.map((lake) => Number(lake.longitude) || 0));
+      const maxLat = Math.max(...lakes.map((lake) => Number(lake.latitude) || 0));
+      const maxLng = Math.max(...lakes.map((lake) => Number(lake.longitude) || 0));
 
       // Fetch weather reports
       const weatherReportResponse = await fetch(

@@ -6,21 +6,21 @@ type DateTime = string
 export interface Lake {
     id?: number;
     lake_name: string;
-    latitude?: number;
-    longitude?: number;
+    latitude?: string;
+    longitude?: string;
     nearby_city_name?: string;
     state_or_province?: string;
     country?: string;
-    nearby_city_latitude?: number;
-    nearby_city_longitude?: number;
+    nearby_city_latitude?: string;
+    nearby_city_longitude?: string;
     max_depth_m?: number;
     surface_area_m2?: number;
   }
   
-  export interface WeatherByDay {
+  export interface DailyWeather {
     date: DateTime;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     nearby_city_name: string;
     state_or_province: string;
     country: string;

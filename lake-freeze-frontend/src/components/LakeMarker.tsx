@@ -33,7 +33,7 @@ export function LakeMarker({
 
   return (
     <MarkerF
-      position={{ lat: lake_weather_report.latitude, lng: lake_weather_report.longitude }}
+      position={{ lat: Number(lake_weather_report.latitude), lng: Number(lake_weather_report.longitude) }}
       icon={{
         url: lake_weather_report.is_frozen ? icePngUrl : waterPngUrl
       }}

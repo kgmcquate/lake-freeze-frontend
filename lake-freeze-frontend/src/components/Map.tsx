@@ -43,9 +43,6 @@ import '../styles/Map.css';
 // }
 
 
-
-{/* <Cursor hollow color={colors[i]} duration={0.8} size={45} /> */}
-
 /**
  * Calculates the average value of an array.
  * @param arr - Array of numbers

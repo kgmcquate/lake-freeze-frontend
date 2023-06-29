@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { InfoWindow, InfoWindowF } from '@react-google-maps/api';
+import { InfoWindowF } from '@react-google-maps/api';
 import '../styles/LakeInfoBox.css';
 
 import { LakeInfo } from './models'

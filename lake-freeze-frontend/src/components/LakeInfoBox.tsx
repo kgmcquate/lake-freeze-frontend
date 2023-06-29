@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { InfoWindow } from '@react-google-maps/api';
+import { InfoWindow, InfoWindowF } from '@react-google-maps/api';
 import '../styles/LakeInfoBox.css';
 
-import { LakeWeatherReport } from './models'
+import { LakeInfo } from './models'
 
 /**
  * Formats the lake name to be human readable.
@@ -23,25 +23,27 @@ const formatLakeName = (lakeName: string) => {
  * LakeInfoBox component displays additional information about a lake in an InfoWindow.
  * It shows the lake's name, date, meters of ice, and position.
  *
- * @param lake_weather_report - The weather report data for the lake.
+ * @param lakeInfo - The weather report data for the lake.
  */
-export function LakeInfoBox({ lake_weather_report }: { lake_weather_report: LakeWeatherReport }) {
-
+export function LakeInfoBox({ lakeInfo }: { lakeInfo: LakeInfo }) {
 
   return (
     <div className='lake-info-box'>
-      <InfoWindow
-        position={{ lat: Number(lake_weather_report.latitude), lng: Number(lake_weather_report.longitude) }}
+      <InfoWindowF
+        position={{ lat: Number(lakeInfo.lake.latitude), lng: Number(lakeInfo.lake.longitude) }}
+        
       >
         <div style={{ fontFamily: "Roboto" }}>
-          <h2>{formatLakeName(lake_weather_report.lake_name)}</h2>
+          <h2>{formatLakeName(lakeInfo.lake.lake_name)}</h2>
           <ul>
-            <li>Date: {lake_weather_report.date}</li>
-            <li>Meters of Ice: {lake_weather_report.ice_m.toFixed(2)}</li>
-            <li>Position: {lake_weather_report.latitude},{lake_weather_report.longitude}</li>
+            <li>Date: {lakeInfo.lakeWeatherReport?.date}</li>
+            <li>Ice Thickness (m): {lakeInfo.lakeWeatherReport?.ice_m.toFixed(2)}</li>
+            {lakeInfo.lake.surface_area_m2 ? <li>Surface Area (m<sup>2</sup>): {lakeInfo.lake.surface_area_m2}</li> : null}
+            {lakeInfo.lake.max_depth_m ? <li>Max Depth (m): {lakeInfo.lake.max_depth_m}</li> : null}
+            <li>Position: {lakeInfo.lake.latitude},{lakeInfo.lake.longitude}</li>
           </ul>
         </div>
-      </InfoWindow>
+      </InfoWindowF>
     </div>
   );
 }

@@ -46,3 +46,8 @@ export interface Lake {
     lake_name: string;
     last_updated_ts?: DateTime;
   }
+
+  export interface LakeInfo {
+    lake: Lake
+    lakeWeatherReport?: LakeWeatherReport
+  }

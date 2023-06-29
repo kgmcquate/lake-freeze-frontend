@@ -1,4 +1,4 @@
-import { Lake, LakeWeatherReport } from './components/models'
+import { Lake, LakeWeatherReport, LakeInfo } from './components/models'
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import Map from './components/Map';
@@ -38,14 +38,14 @@ describe('LakeFilterBox Component', () => {
 
 describe('LakeMarker Component', () => {
   it('renders the LakeMarker component without errors', () => {
-    render(<LakeMarker lake_weather_report={mockLakeWeatherReports[0]} clusterer={undefined} />);
+    render(<LakeMarker lakeInfo={{lake: mockLakes[0], lakeWeatherReport: mockLakeWeatherReports[0]}} clusterer={undefined} />);
     // Add more assertions if needed
   });
 });
 
 describe('LakeInfoBox Component', () => {
   it('renders the LakeInfoBox component without errors', () => {
-    render(<LakeInfoBox lake_weather_report={mockLakeWeatherReports[0]} />);
+    render(<LakeInfoBox lakeInfo={{lake: mockLakes[0], lakeWeatherReport: mockLakeWeatherReports[0]}} />);
     // Add more assertions if needed
   });
 });

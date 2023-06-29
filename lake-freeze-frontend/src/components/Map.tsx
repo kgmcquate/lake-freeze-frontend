@@ -5,8 +5,46 @@ import { LakeMarker } from './LakeMarker';
 import { LakeFilterBox } from './LakeFilterBox';
 import { LoadingBox } from './LoadingBox';
 import { mapStyles, clusterStyles } from './mapStyles';
-import { Lake, LakeWeatherReport } from './models';
+import { Lake, LakeWeatherReport, LakeInfo } from './models';
 import '../styles/Map.css';
+
+
+
+// function MouseInfoBox() {
+//   const [mousePos, setMousePos] = useState<any>({});
+
+//   interface AnEvent {
+
+//   }
+
+//   useEffect(() => {
+//     const handleMouseMove = (event: any) => {
+//       setMousePos({ x: event.clientX, y: event.clientY });
+//     };
+
+//     window.addEventListener('mousemove', handleMouseMove);
+
+//     return () => {
+//       window.removeEventListener(
+//         'mousemove',
+//         handleMouseMove
+//       );
+//     };
+//   }, []);
+
+//   return (
+//     <div>
+//       The mouse is at position{' '}
+//       <b>
+//         ({mousePos.x}, {mousePos.y})
+//       </b>
+//     </div>
+//   );
+// }
+
+
+
+{/* <Cursor hollow color={colors[i]} duration={0.8} size={45} /> */}
 
 /**
  * Calculates the average value of an array.
@@ -15,15 +53,15 @@ import '../styles/Map.css';
  */
 const getAvg = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.length;
 
-export const DEFAULT_LAKE_COUNT_LIMIT = 200;
-export const MAX_LAKE_COUNT_LIMIT = 500;
+export const DEFAULT_LAKE_COUNT_LIMIT = 400;
+export const MAX_LAKE_COUNT_LIMIT = 1000;
 const DEFAULT_ZOOM = 7;
 
 /**
  * Map component responsible for displaying the Google Map and markers.
  */
 const Map: React.FunctionComponent = () => {
-  const [lakeWeatherReports, setLakeWeatherReports] = useState<LakeWeatherReport[]>([]);
+  const [lakeInfos, setLakeInfos] = useState<LakeInfo[]>([]);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const zoom = DEFAULT_ZOOM;
   const [loading, setLoading] = useState(false);
@@ -63,9 +101,15 @@ const Map: React.FunctionComponent = () => {
           limit: lakeCountLimit.toString(),
         })}`
       );
-      const reportsData: LakeWeatherReport[] = await weatherReportResponse.json();
+      const reports: LakeWeatherReport[] = await weatherReportResponse.json();
 
-      setLakeWeatherReports(reportsData);
+      const lakeInfos: LakeInfo[] = lakes.map(lake => ({
+          lakeWeatherReport: reports.find(report => report.lake_id === lake.id),
+          lake: lake
+        })
+      )
+
+      setLakeInfos(lakeInfos);
       setLoading(false);
     }
 
@@ -79,6 +123,8 @@ const Map: React.FunctionComponent = () => {
   const onLimitChange = (value: number) => {
     setLakeCountLimit(value);
   };
+
+  
 
   return (
     <div>
@@ -96,13 +142,14 @@ const Map: React.FunctionComponent = () => {
       >
         {loading ? <LoadingBox /> : null}
         <LakeFilterBox onLimitChange={onLimitChange} />
+        
         <MarkerClusterer styles={clusterStyles}>
           {(clusterer) => (
             <div>
-              {lakeWeatherReports?.map((lake_weather_report) => (
+              {lakeInfos?.map((lakeInfo) => (
                 <LakeMarker
-                  key={lake_weather_report.lake_id}
-                  lake_weather_report={lake_weather_report}
+                  key={lakeInfo.lake.id}
+                  lakeInfo={lakeInfo}
                   clusterer={clusterer}
                 />
               ))}

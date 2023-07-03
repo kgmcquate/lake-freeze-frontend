@@ -18,7 +18,6 @@ Parameters:
     Type: String
     Default: lake-freeze-frontend
 
-
 Resources:
   S3BucketPolicy:
     Type: 'AWS::S3::BucketPolicy'

@@ -5,7 +5,7 @@ import { LakeMarker } from './LakeMarker';
 import { LakeFilterBox } from './LakeFilterBox';
 import { LoadingBox } from './LoadingBox';
 import { mapStyles, clusterStyles } from './mapStyles';
-import { Lake, LakeWeatherReport, LakeInfo } from './models';
+import { WaterBody, WaterBodyWeatherReport, LakeInfo } from './models';
 import '../styles/Map.css';
 
 
@@ -50,7 +50,7 @@ import '../styles/Map.css';
  */
 const getAvg = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.length;
 
-export const DEFAULT_LAKE_COUNT_LIMIT = 400;
+export const DEFAULT_LAKE_COUNT_LIMIT = 500;
 export const MAX_LAKE_COUNT_LIMIT = 1000;
 const DEFAULT_ZOOM = 7;
 
@@ -70,11 +70,11 @@ const Map: React.FunctionComponent = () => {
 
       // Fetch lakes
       const response = await fetch(
-        `${process.env.REACT_APP_LAKES_API_URL}/lakes?${new URLSearchParams({
+        `${process.env.REACT_APP_LAKES_API_URL}/water_bodies?${new URLSearchParams({
           limit: lakeCountLimit.toString(),
         })}`
       );
-      const lakes: Lake[] = await response.json();
+      const lakes: WaterBody[] = await response.json();
 
       const avgLat = getAvg(lakes.map((lake) =>  Number(lake.latitude) || 0));
       const avgLng = getAvg(lakes.map((lake) =>  Number(lake.longitude) || 0));
@@ -89,7 +89,7 @@ const Map: React.FunctionComponent = () => {
 
       // Fetch weather reports
       const weatherReportResponse = await fetch(
-        `${process.env.REACT_APP_LAKES_API_URL}/lake_weather_reports?${new URLSearchParams({
+        `${process.env.REACT_APP_LAKES_API_URL}/water_body_weather_reports?${new URLSearchParams({
           lake_ids: lakes.map((lake) => lake.id).join(","),
           min_latitude: minLat.toString(),
           max_latitude: maxLat.toString(),
@@ -98,10 +98,10 @@ const Map: React.FunctionComponent = () => {
           limit: lakeCountLimit.toString(),
         })}`
       );
-      const reports: LakeWeatherReport[] = await weatherReportResponse.json();
+      const reports: WaterBodyWeatherReport[] = await weatherReportResponse.json();
 
       const lakeInfos: LakeInfo[] = lakes.map(lake => ({
-          lakeWeatherReport: reports.find(report => report.lake_id === lake.id),
+          lakeWeatherReport: reports.find(report => report.water_body_id === lake.id),
           lake: lake
         })
       )

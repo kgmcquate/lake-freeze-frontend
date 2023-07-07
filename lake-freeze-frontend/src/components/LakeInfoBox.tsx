@@ -11,12 +11,12 @@ import { LakeInfo } from './models'
  * @param lakeName - The name of the lake.
  * @returns The formatted lake name.
  */
-const formatLakeName = (lakeName: string) => {
-  return lakeName
-    .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ") + " Lake";
-};
+// const formatLakeName = (lakeName: string) => {
+//   return lakeName
+//     .split(" ")
+//     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+//     .join(" ") + " Lake";
+// };
 
 
 /**
@@ -34,11 +34,11 @@ export function LakeInfoBox({ lakeInfo }: { lakeInfo: LakeInfo }) {
         
       >
         <div style={{ fontFamily: "Roboto" }}>
-          <h2>{formatLakeName(lakeInfo.lake.lake_name)}</h2>
+          <h2>{lakeInfo.lake.name}</h2>
           <ul>
             <li>Date: {lakeInfo.lakeWeatherReport?.date}</li>
             <li>Ice Thickness (m): {lakeInfo.lakeWeatherReport?.ice_m.toFixed(2)}</li>
-            {lakeInfo.lake.surface_area_m2 ? <li>Surface Area (m<sup>2</sup>): {lakeInfo.lake.surface_area_m2}</li> : null}
+            {lakeInfo.lake.areasqkm ? <li>Surface Area (km<sup>2</sup>): {lakeInfo.lake.areasqkm}</li> : null}
             {lakeInfo.lake.max_depth_m ? <li>Max Depth (m): {lakeInfo.lake.max_depth_m}</li> : null}
             <li>Position: {lakeInfo.lake.latitude},{lakeInfo.lake.longitude}</li>
           </ul>

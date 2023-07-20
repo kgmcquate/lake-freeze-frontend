@@ -50,7 +50,7 @@ import '../styles/Map.css';
  */
 const getAvg = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.length;
 
-export const DEFAULT_LAKE_COUNT_LIMIT = 500;
+export const DEFAULT_LAKE_COUNT_LIMIT = 200;
 export const MAX_LAKE_COUNT_LIMIT = 1000;
 const DEFAULT_ZOOM = 7;
 

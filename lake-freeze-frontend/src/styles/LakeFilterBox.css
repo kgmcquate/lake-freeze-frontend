@@ -10,7 +10,7 @@
     max-width: 100%;
     margin: auto;
     position: absolute;
-    z-index: 0;
+    /* z-index: 0; */
     /* background-color: #0b434f; */
     /* background-color: rgb(103, 187, 255); */
     /* background-blend-mode: normal; */
@@ -28,5 +28,7 @@
 
 .slider {
     color: white;
+
+    /* backdrop-filter: blur(1px); */
 }
 

@@ -5,10 +5,8 @@ import { LakeMarker } from './LakeMarker';
 import { LakeFilterBox } from './LakeFilterBox';
 import { LoadingBox } from './LoadingBox';
 import { mapStyles, clusterStyles } from './mapStyles';
-import { WaterBody, WaterBodyWeatherReport, LakeInfo } from './models';
+import { WaterBody, WaterBodyWeatherReport, WaterBodyInfo } from './models';
 import '../styles/Map.css';
-
-
 
 // function MouseInfoBox() {
 //   const [mousePos, setMousePos] = useState<any>({});
@@ -53,12 +51,14 @@ const getAvg = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.l
 export const DEFAULT_LAKE_COUNT_LIMIT = 200;
 export const MAX_LAKE_COUNT_LIMIT = 1000;
 const DEFAULT_ZOOM = 7;
+export const SATELLITE_IMAGE_PREFIX = "water_body_satellite_images/"
+
 
 /**
  * Map component responsible for displaying the Google Map and markers.
  */
 const Map: React.FunctionComponent = () => {
-  const [lakeInfos, setLakeInfos] = useState<LakeInfo[]>([]);
+  const [lakeInfos, setLakeInfos] = useState<WaterBodyInfo[]>([]);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const zoom = DEFAULT_ZOOM;
   const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ const Map: React.FunctionComponent = () => {
       // Fetch weather reports
       const weatherReportResponse = await fetch(
         `${process.env.REACT_APP_LAKES_API_URL}/water_body_weather_reports?${new URLSearchParams({
-          lake_ids: lakes.map((lake) => lake.id).join(","),
+          lake_ids: lakes.map((lake) => lake.id).sort().join(","), //Sorted so that API result caching works properly
           min_latitude: minLat.toString(),
           max_latitude: maxLat.toString(),
           min_longitude: minLng.toString(),
@@ -100,7 +100,7 @@ const Map: React.FunctionComponent = () => {
       );
       const reports: WaterBodyWeatherReport[] = await weatherReportResponse.json();
 
-      const lakeInfos: LakeInfo[] = lakes.map(lake => ({
+      const lakeInfos: WaterBodyInfo[] = lakes.map(lake => ({
           lakeWeatherReport: reports.find(report => report.water_body_id === lake.id),
           lake: lake
         })
@@ -137,6 +137,10 @@ const Map: React.FunctionComponent = () => {
           styles: mapStyles,
         }}
       >
+        <div>
+          Links:
+        </div>
+        {/* <NavBar /> */}
         {loading ? <LoadingBox /> : null}
         <LakeFilterBox onLimitChange={onLimitChange} />
         

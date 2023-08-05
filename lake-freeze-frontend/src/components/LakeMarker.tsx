@@ -9,7 +9,7 @@ import { LakeInfoBox } from './LakeInfoBox';
 
 import '../styles/LakeMarker.css'
 
-import { LakeInfo } from './models'
+import { WaterBodyInfo } from './models'
 
 const icePngUrl = "https://img.icons8.com/emoji/24/000000/ice.png";
 const waterPngUrl = "https://img.icons8.com/color/24/000000/water.png";
@@ -26,10 +26,10 @@ export function LakeMarker({
   lakeInfo,
   clusterer
 }: {
-  lakeInfo: LakeInfo;
+  lakeInfo: WaterBodyInfo;
   clusterer?: Clusterer;
 }) {
-  const [lakeMarkerInfo, setLakeMarkerInfo] = useState<LakeInfo | null>(null);
+  const [lakeMarkerInfo, setLakeMarkerInfo] = useState<WaterBodyInfo | null>(null);
 
   const latNum = Number(lakeInfo.lake.latitude)
   const longNum = Number(lakeInfo.lake.longitude)
@@ -55,8 +55,9 @@ export function LakeMarker({
           setLakeMarkerInfo(null)
         }}
         clusterer={clusterer}
+        
       >
-        {lakeMarkerInfo && <LakeInfoBox lakeInfo={lakeMarkerInfo} />}
+        {lakeMarkerInfo && <LakeInfoBox waterBodyInfo={lakeMarkerInfo} />}
       </MarkerF>
     );
 }

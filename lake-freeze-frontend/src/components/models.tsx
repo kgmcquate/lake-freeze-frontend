@@ -47,7 +47,21 @@ export interface WaterBodyWeatherReport {
   last_updated_ts?: DateTime;
 }
 
-export interface LakeInfo {
+export interface WaterBodyInfo {
   lake: WaterBody
   lakeWeatherReport?: WaterBodyWeatherReport
+}
+
+
+export interface WaterBodySatelliteImage {
+  waterbody_id: number;
+  captured_ts: string; // ISO 8601 formatted string
+  satellite_dataset: string;
+  ee_id: string;
+  properties: string | null;
+  filename: string;
+  thumbnail_filename: string;
+  red_average: number;
+  green_average: number;
+  blue_average: number;
 }

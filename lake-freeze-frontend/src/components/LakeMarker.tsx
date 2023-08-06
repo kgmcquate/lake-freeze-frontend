@@ -1,17 +1,12 @@
 import React from 'react'
 
-import { MarkerF, Marker, OverlayView } from '@react-google-maps/api';
+import { Marker } from '@react-google-maps/api';
 import { Clusterer } from '@react-google-maps/marker-clusterer/';
-
-import { useState, useEffect } from 'react';
-
 import { LakeInfoBox } from './LakeInfoBox';
 
 import '../styles/LakeMarker.css'
 
 import { WaterBodyInfo } from './models'
-
-import { debounce } from './debounce';
 
 const icePngUrl = "https://img.icons8.com/emoji/24/000000/ice.png";
 const waterPngUrl = "https://img.icons8.com/color/24/000000/water.png";

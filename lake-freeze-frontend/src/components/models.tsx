@@ -36,7 +36,7 @@ export interface DailyWeather {
 }
 
 export interface WaterBodyWeatherReport {
-  water_body_id: number;
+  waterbody_id: number;
   date: DateTime;
   ice_alg_version: string;
   ice_m: number;

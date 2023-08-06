@@ -101,11 +101,15 @@ const Map: React.FunctionComponent = () => {
       );
       const reports: WaterBodyWeatherReport[] = await weatherReportResponse.json();
 
+      console.log(reports)
+
       const lakeInfos: WaterBodyInfo[] = lakes.map(lake => ({
-          lakeWeatherReport: reports.find(report => report.water_body_id === lake.id),
+          lakeWeatherReport: reports.find(report => report.waterbody_id === lake.id),
           lake: lake
         })
       )
+
+      console.log(lakeInfos)
 
       setLakeInfos(lakeInfos);
       setLoading(false);

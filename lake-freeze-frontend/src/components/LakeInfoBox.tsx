@@ -26,7 +26,7 @@ import { WaterBodyInfo, WaterBodySatelliteImage } from './models'
  *
  * @param waterBodyInfo - The weather report data for the lake.
  */
-export function LakeInfoBox({ waterBodyInfo }: { waterBodyInfo: WaterBodyInfo }) {
+export function LakeInfoBox({ waterBodyInfo, onCloseClick }: { waterBodyInfo: WaterBodyInfo; onCloseClick: (marker: number | null) => void; }) {
 
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
@@ -44,10 +44,16 @@ export function LakeInfoBox({ waterBodyInfo }: { waterBodyInfo: WaterBodyInfo })
         );
 
         const image: WaterBodySatelliteImage | null = await response.json();
-        const imageUrl = `${SATELLITE_IMAGE_PREFIX}${image?.thumbnail_filename}`
+        if (!image) {
+          setThumbnailUrl(null)
+          return
+        }
+
+        const imageUrl = `https://lake-freeze.kevin-mcquate.net/${SATELLITE_IMAGE_PREFIX}${image?.thumbnail_filename}`
+        
         console.log(imageUrl)
 
-        setThumbnailUrl(`${SATELLITE_IMAGE_PREFIX}${image?.thumbnail_filename}`)
+        setThumbnailUrl(imageUrl)
       }
 
       fetchImageInfo()
@@ -60,17 +66,17 @@ export function LakeInfoBox({ waterBodyInfo }: { waterBodyInfo: WaterBodyInfo })
     <div className='lake-info-box'>
       <InfoWindowF
         position={{ lat: Number(waterBodyInfo.lake.latitude), lng: Number(waterBodyInfo.lake.longitude) }}
-        
+        onCloseClick={() => onCloseClick(null)}
       >
         <div style={{ fontFamily: "Roboto" }}>
           <h2>{waterBodyInfo.lake.name}</h2>
           <ul>
-            <li>Date: {waterBodyInfo.lakeWeatherReport?.date}</li>
+            {/* <li>Date: {waterBodyInfo.lakeWeatherReport?.date}</li> */}
             <li>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</li>
             {waterBodyInfo.lake.areasqkm ? <li>Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm}</li> : null}
             {waterBodyInfo.lake.max_depth_m ? <li>Max Depth (m): {waterBodyInfo.lake.max_depth_m}</li> : null}
             <li>Position: {waterBodyInfo.lake.latitude},{waterBodyInfo.lake.longitude}</li>
-            {thumbnailUrl ? <img src={thumbnailUrl} alt="Loading..."/> : null}
+            {thumbnailUrl ? <li>Latest Satellite Image: <br/><img src={thumbnailUrl} alt="Loading..."/></li> : null}
           </ul>
         </div>
       </InfoWindowF>

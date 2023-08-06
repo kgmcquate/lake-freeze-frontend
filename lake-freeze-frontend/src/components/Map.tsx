@@ -78,6 +78,7 @@ const Map: React.FunctionComponent = () => {
 
       const avgLat = getAvg(lakes.map((lake) =>  Number(lake.latitude) || 0));
       const avgLng = getAvg(lakes.map((lake) =>  Number(lake.longitude) || 0));
+
       if (!isNaN(avgLat) && !isNaN(avgLng)) {
         setCenter({ lat: avgLat, lng: avgLng });
       }
@@ -121,13 +122,41 @@ const Map: React.FunctionComponent = () => {
     setLakeCountLimit(value);
   };
 
-  
+
+  const [activeMarkerId, setActiveMarkerId] = useState<number | null>(null);
+
+  const handleActiveMarker = (markerId: number | null) => {
+    // console.log(markerId)
+    if (markerId === activeMarkerId) {
+      setActiveMarkerId(null) //Toggle
+      return;
+    }
+    setActiveMarkerId(markerId);
+  };
+
+  // const handleOnLoad = (map: google.maps.Map ) => {
+  //   const bounds = new google.maps.LatLngBounds();
+  //   lakeInfos.forEach((lakeInfo) => bounds.extend(
+  //       new google.maps.LatLng(
+  //         Number(lakeInfo.lake.latitude), 
+  //         Number(lakeInfo.lake.longitude)
+  //       )
+  //     )
+  //   );
+    
+  //   console.log(bounds)
+
+  //   map.fitBounds(bounds);
+  // };
+
 
   return (
     <div>
       <GoogleMap
+        // onLoad={handleOnLoad}
         zoom={zoom}
         center={center}
+        onClick={() => handleActiveMarker(null)}
         mapContainerClassName="map-container"
         options={{
           mapTypeControl: false, //Remove ability to change map type
@@ -137,10 +166,6 @@ const Map: React.FunctionComponent = () => {
           styles: mapStyles,
         }}
       >
-        <div>
-          Links:
-        </div>
-        {/* <NavBar /> */}
         {loading ? <LoadingBox /> : null}
         <LakeFilterBox onLimitChange={onLimitChange} />
         
@@ -152,6 +177,8 @@ const Map: React.FunctionComponent = () => {
                   key={lakeInfo.lake.id}
                   lakeInfo={lakeInfo}
                   clusterer={clusterer}
+                  handleActiveMarker={handleActiveMarker}
+                  activeMarkerId={activeMarkerId}
                 />
               ))}
             </div>

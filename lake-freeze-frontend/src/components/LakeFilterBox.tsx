@@ -3,6 +3,8 @@ import React from 'react'
 import Slider from '@mui/material/Slider';
 import '../styles/LakeFilterBox.css';
 import { DEFAULT_LAKE_COUNT_LIMIT, MAX_LAKE_COUNT_LIMIT } from './Map';
+import { debounce } from './debounce';
+
 
 /**
  * LakeFilterBox component provides a slider to filter the number of lakes displayed on the map.
@@ -10,6 +12,8 @@ import { DEFAULT_LAKE_COUNT_LIMIT, MAX_LAKE_COUNT_LIMIT } from './Map';
  * @param onLimitChange - Callback function to handle the change in lake count limit.
  */
 export function LakeFilterBox({ onLimitChange }: { onLimitChange: (value: number) => void }) {
+  const debouncedOnLimitChange = debounce(onLimitChange, 500)
+
   return (
     <div className='lake-filter-box'>
       <label>Number of Lakes:</label>
@@ -17,7 +21,7 @@ export function LakeFilterBox({ onLimitChange }: { onLimitChange: (value: number
         className='slider'
         aria-label="Default"
         valueLabelDisplay="auto"
-        onChange={(_, value) => onLimitChange(value as number)}
+        onChange={(_, value) => debouncedOnLimitChange(value as number)}
         min={0}
         max={MAX_LAKE_COUNT_LIMIT}
         step={50}

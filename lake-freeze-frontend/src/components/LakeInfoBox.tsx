@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react'
 
-import { InfoWindowF } from '@react-google-maps/api';
+import { InfoWindow } from '@react-google-maps/api';
 import '../styles/LakeInfoBox.css';
 import { SATELLITE_IMAGE_PREFIX } from './Map'
 
-import { WaterBodyInfo, WaterBodySatelliteImage } from './models'
+import Divider from '@mui/material/Divider';
+// import ListItemText from '@mui/material/ListItemText';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+// import ListSubheader from '@mui/material/ListSubheader';
+import Typography from '@mui/material/Typography';
+
+import { DailyWeather, WaterBodyInfo, WaterBodySatelliteImage } from './models'
+import dayjs, { Dayjs } from 'dayjs';
 
 /**
  * Formats the lake name to be human readable.
@@ -26,60 +35,126 @@ import { WaterBodyInfo, WaterBodySatelliteImage } from './models'
  *
  * @param waterBodyInfo - The weather report data for the lake.
  */
-export function LakeInfoBox({ waterBodyInfo, onCloseClick }: { waterBodyInfo: WaterBodyInfo; onCloseClick: (marker: number | null) => void; }) {
+export function LakeInfoBox({ 
+    waterBodyInfo, 
+    date,
+    onCloseClick 
+  }: { 
+    waterBodyInfo: WaterBodyInfo; 
+    date: Dayjs | null;
+    onCloseClick: (marker: number | null) => void; 
+  }) {
 
+  const [imageInfo, setImageInfo] = useState<WaterBodySatelliteImage | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [dailyWeather, setDailyWeather] = useState<DailyWeather | null>(null);
 
 
   useEffect(() => {
       async function fetchImageInfo() {
         // setLoading(true);
-
+        if (date === null) {
+          return
+        }
         // Fetch lakes
         const response = await fetch(
           `${process.env.REACT_APP_LAKES_API_URL}/waterbody_image?${new URLSearchParams({
             waterbody_id: waterBodyInfo.lake.id.toString(),
-
+            nearest_ts: date.toISOString()
           })}`
         );
 
-        const image: WaterBodySatelliteImage | null = await response.json();
-        if (!image) {
+        const imageInfo: WaterBodySatelliteImage | null = await response.json();
+
+        setImageInfo(imageInfo)
+
+        if (!imageInfo) {
           setThumbnailUrl(null)
           return
         }
 
-        const imageUrl = `https://lake-freeze.kevin-mcquate.net/${SATELLITE_IMAGE_PREFIX}${image?.thumbnail_filename}`
+        const imageUrl = `https://lake-freeze.kevin-mcquate.net/${SATELLITE_IMAGE_PREFIX}${imageInfo.thumbnail_filename}`
         
-        console.log(imageUrl)
+        // console.log(imageUrl)
 
         setThumbnailUrl(imageUrl)
       }
 
       fetchImageInfo()
     }, 
-    [waterBodyInfo]
+    [waterBodyInfo, date]
   );
-  
 
-  return (
-    <div className='lake-info-box'>
-      <InfoWindowF
-        position={{ lat: Number(waterBodyInfo.lake.latitude), lng: Number(waterBodyInfo.lake.longitude) }}
-        onCloseClick={() => onCloseClick(null)}
-      >
-        <div style={{ fontFamily: "Roboto" }}>
-          <h2>{waterBodyInfo.lake.name}</h2>
-          <ul>
-            {/* <li>Date: {waterBodyInfo.lakeWeatherReport?.date}</li> */}
-            <li>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</li>
-            {waterBodyInfo.lake.areasqkm ? <li>Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm}</li> : null}
-            {waterBodyInfo.lake.max_depth_m ? <li>Max Depth (m): {waterBodyInfo.lake.max_depth_m}</li> : null}
-            <li>Position: {waterBodyInfo.lake.latitude},{waterBodyInfo.lake.longitude}</li>
-            {thumbnailUrl ? <li>Latest Satellite Image: <br/><img src={thumbnailUrl} alt="Loading..."/></li> : null}
-          </ul>
-        </div>
-      </InfoWindowF>
-    </div>
-  );
+  useEffect(() => {
+    async function fetchDailyWeather() {
+      if (date === null) {
+        return
+      }
+
+      const response = await fetch(
+        `${process.env.REACT_APP_LAKES_API_URL}/get_daily_weather?${new URLSearchParams({
+          latitude: waterBodyInfo.lake.latitude,
+          longitude: waterBodyInfo.lake.longitude,
+          date: date.format("YYYY-MM-DD")
+        })}`
+      );
+
+      const dailyWeather: DailyWeather | null = await response.json();
+
+      // console.log(dailyWeather)
+
+      setDailyWeather(dailyWeather)
+    }
+
+    fetchDailyWeather()
+  },
+  [date, waterBodyInfo]
+  )
+
+
+  const innerElement = (
+    <div className='lake-info-box' id='activebox'>
+        {/* <h3>{waterBodyInfo.lake.name}</h3> */}
+        <Typography variant="h6" component="h6" style={{marginBottom: "0px"}}>
+          {waterBodyInfo.lake.name}
+        </Typography>
+        <List style={{marginTop: "0px", padding: "0px", marginBlock: "0px"}}>
+          {/* <li>Date: {waterBodyInfo.lakeWeatherReport?.date}</li> */}
+          {waterBodyInfo.lakeWeatherReport && waterBodyInfo.lakeWeatherReport.ice_m > 0 ?
+            <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
+            : null
+          }
+          {dailyWeather ? <ListItem>Temperature (&deg;C): {(dailyWeather.temperature_2m_max + dailyWeather.temperature_2m_min / 2).toFixed(1) }</ListItem> : null}
+          {waterBodyInfo.lake.areasqkm ? <ListItem>Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm.toFixed(0)}</ListItem> : null}
+          {waterBodyInfo.lake.max_depth_m ? <ListItem>Max Depth (m): {waterBodyInfo.lake.max_depth_m.toFixed(0)}</ListItem> : null}
+          <ListItem>Position: {Number(waterBodyInfo.lake.latitude).toFixed(3)}, {Number(waterBodyInfo.lake.longitude).toFixed(3)}</ListItem>
+          {thumbnailUrl ? 
+          <ListItem style={{flexDirection: "column"}}>
+            {/* <ListItemText> */}
+              Satellite Image {`(taken ${imageInfo && date ? Math.abs(date.diff(dayjs(imageInfo.captured_ts), 'day')) : null} days from ${date?.format("YYYY-MM-DD")} )`}: 
+
+
+            {/* </ListItemText> */}
+            <Divider/>
+            
+            <ListItemIcon>
+
+              <img src={thumbnailUrl} alt="Loading..." style={{minWidth: 300, maxHeight: 300, borderRadius: "10px", border: "solid", borderColor: "gray", marginTop: "3%"}}/>
+            </ListItemIcon>
+          </ListItem> 
+          : null}
+        </List>
+      </div>
+  )
+
+  const infoWindow = (
+    <InfoWindow
+      position={{ lat: Number(waterBodyInfo.lake.latitude), lng: Number(waterBodyInfo.lake.longitude) }}
+      onCloseClick={() => onCloseClick(null)}
+      children={innerElement}
+    />
+  )
+  
+  
+  return infoWindow;
 }

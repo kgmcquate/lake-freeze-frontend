@@ -18,21 +18,27 @@ export interface WaterBody {
 }
   
 export interface DailyWeather {
-  date: DateTime;
+  date: string;
   latitude: string;
   longitude: string;
-  nearby_city_name: string;
-  state_or_province: string;
-  country: string;
-  max_temp_c: number;
-  min_temp_c: number;
-  avg_temp_c: number;
-  max_wind_kph: number;
-  total_precip_mm: number;
-  avg_visibility_km: number;
-  avg_humidity: number;
-  uv: number;
-  last_updated_ts?: DateTime;
+  timezone: string;
+  temperature_2m_max: number;
+  temperature_2m_min: number;
+  sunrise: string;
+  sunset: string;
+  uv_index_max: number;
+  uv_index_clear_sky_max?: number | null;
+  precipitation_sum?: number | null;
+  rain_sum?: number | null;
+  showers_sum?: number | null;
+  snowfall_sum?: number | null;
+  precipitation_hours?: number | null;
+  precipitation_probability_max?: number | null;
+  windspeed_10m_max?: number | null;
+  windgusts_10m_max?: number | null;
+  winddirection_10m_dominant?: number | null;
+  shortwave_radiation_sum?: number | null;
+  et0_fao_evapotranspiration?: number | null;
 }
 
 export interface WaterBodyWeatherReport {

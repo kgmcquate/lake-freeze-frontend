@@ -1,5 +1,6 @@
 import React from 'react';
 import { GoogleMap, MarkerClusterer } from '@react-google-maps/api';
+import dayjs, { Dayjs } from 'dayjs';
 import { useState, useEffect } from 'react';
 import { LakeMarker } from './LakeMarker';
 import { LakeFilterBox } from './LakeFilterBox';
@@ -7,38 +8,6 @@ import { LoadingBox } from './LoadingBox';
 import { mapStyles, clusterStyles } from './mapStyles';
 import { WaterBody, WaterBodyWeatherReport, WaterBodyInfo } from './models';
 import '../styles/Map.css';
-
-// function MouseInfoBox() {
-//   const [mousePos, setMousePos] = useState<any>({});
-
-//   interface AnEvent {
-
-//   }
-
-//   useEffect(() => {
-//     const handleMouseMove = (event: any) => {
-//       setMousePos({ x: event.clientX, y: event.clientY });
-//     };
-
-//     window.addEventListener('mousemove', handleMouseMove);
-
-//     return () => {
-//       window.removeEventListener(
-//         'mousemove',
-//         handleMouseMove
-//       );
-//     };
-//   }, []);
-
-//   return (
-//     <div>
-//       The mouse is at position{' '}
-//       <b>
-//         ({mousePos.x}, {mousePos.y})
-//       </b>
-//     </div>
-//   );
-// }
 
 
 /**
@@ -52,6 +21,8 @@ export const DEFAULT_LAKE_COUNT_LIMIT = 200;
 export const MAX_LAKE_COUNT_LIMIT = 1000;
 const DEFAULT_ZOOM = 7;
 export const SATELLITE_IMAGE_PREFIX = "water_body_satellite_images/"
+
+
 
 
 /**
@@ -74,24 +45,24 @@ const Map: React.FunctionComponent = () => {
           limit: lakeCountLimit.toString(),
         })}`
       );
-      const lakes: WaterBody[] = await response.json();
+      const waterbodies: WaterBody[] = await response.json();
 
-      const avgLat = getAvg(lakes.map((lake) =>  Number(lake.latitude) || 0));
-      const avgLng = getAvg(lakes.map((lake) =>  Number(lake.longitude) || 0));
+      const avgLat = getAvg(waterbodies.map((waterbody) =>  Number(waterbody.latitude) || 0));
+      const avgLng = getAvg(waterbodies.map((waterbody) =>  Number(waterbody.longitude) || 0));
 
       if (!isNaN(avgLat) && !isNaN(avgLng)) {
         setCenter({ lat: avgLat, lng: avgLng });
       }
 
-      const minLat = Math.min(...lakes.map((lake) => Number(lake.latitude) || 0));
-      const minLng = Math.min(...lakes.map((lake) => Number(lake.longitude) || 0));
-      const maxLat = Math.max(...lakes.map((lake) => Number(lake.latitude) || 0));
-      const maxLng = Math.max(...lakes.map((lake) => Number(lake.longitude) || 0));
+      const minLat = Math.min(...waterbodies.map((waterbody) => Number(waterbody.latitude) || 0));
+      const minLng = Math.min(...waterbodies.map((waterbody) => Number(waterbody.longitude) || 0));
+      const maxLat = Math.max(...waterbodies.map((waterbody) => Number(waterbody.latitude) || 0));
+      const maxLng = Math.max(...waterbodies.map((waterbody) => Number(waterbody.longitude) || 0));
 
       // Fetch weather reports
       const weatherReportResponse = await fetch(
         `${process.env.REACT_APP_LAKES_API_URL}/water_body_weather_reports?${new URLSearchParams({
-          lake_ids: lakes.map((lake) => lake.id).sort().join(","), //Sorted so that API result caching works properly
+          water_body_ids: waterbodies.map((waterbody) => waterbody.id).sort().join(","), //Sorted so that API result caching works properly
           min_latitude: minLat.toString(),
           max_latitude: maxLat.toString(),
           min_longitude: minLng.toString(),
@@ -103,9 +74,9 @@ const Map: React.FunctionComponent = () => {
 
       console.log(reports)
 
-      const lakeInfos: WaterBodyInfo[] = lakes.map(lake => ({
-          lakeWeatherReport: reports.find(report => report.waterbody_id === lake.id),
-          lake: lake
+      const lakeInfos: WaterBodyInfo[] = waterbodies.map(waterbody => ({
+          lakeWeatherReport: reports.find(report => report.waterbody_id === waterbody.id),
+          lake: waterbody
         })
       )
 
@@ -153,6 +124,19 @@ const Map: React.FunctionComponent = () => {
   //   map.fitBounds(bounds);
   // };
 
+  
+  const [date, setDate] = useState<Dayjs | null>(dayjs())
+
+  // google.maps.event.addListenerOnce(Map, 'idle', function(){
+  //   const elem = document.getElementsByClassName('.gm-style-iw')
+    
+  //   if (elem === null) {
+  //     return
+  //   }
+    
+  //   elem.item(0)?.prev('div').remove();
+  // }); 
+
 
   return (
     <div>
@@ -170,8 +154,13 @@ const Map: React.FunctionComponent = () => {
           styles: mapStyles,
         }}
       >
+        <LakeFilterBox 
+          date={date}
+          setDate={setDate}
+          onLimitChange={onLimitChange} 
+        />
+
         {loading ? <LoadingBox /> : null}
-        <LakeFilterBox onLimitChange={onLimitChange} />
         
         <MarkerClusterer styles={clusterStyles}>
           {(clusterer) => (
@@ -180,6 +169,7 @@ const Map: React.FunctionComponent = () => {
                 <LakeMarker
                   key={lakeInfo.lake.id}
                   lakeInfo={lakeInfo}
+                  date={date}
                   clusterer={clusterer}
                   handleActiveMarker={handleActiveMarker}
                   activeMarkerId={activeMarkerId}

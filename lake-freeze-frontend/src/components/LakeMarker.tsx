@@ -3,7 +3,7 @@ import React from 'react'
 import { Marker } from '@react-google-maps/api';
 import { Clusterer } from '@react-google-maps/marker-clusterer/';
 import { LakeInfoBox } from './LakeInfoBox';
-
+import { Dayjs } from 'dayjs';
 import '../styles/LakeMarker.css'
 
 import { WaterBodyInfo } from './models'
@@ -22,11 +22,13 @@ const waterPngUrl = "https://img.icons8.com/color/24/000000/water.png";
  */
 export function LakeMarker({
     lakeInfo,
+    date,
     clusterer,
     handleActiveMarker,
     activeMarkerId
   }: {
     lakeInfo: WaterBodyInfo;
+    date: Dayjs | null;
     clusterer?: Clusterer;
     handleActiveMarker: (markerId: number | null) => void;
     activeMarkerId: number | null;
@@ -52,7 +54,7 @@ export function LakeMarker({
         >
           {
             activeMarkerId === lakeInfo.lake.id  ? (
-              <LakeInfoBox waterBodyInfo={lakeInfo} onCloseClick={handleActiveMarker} />
+              <LakeInfoBox waterBodyInfo={lakeInfo} date={date} onCloseClick={handleActiveMarker} />
             ) : null
           }
         </Marker>

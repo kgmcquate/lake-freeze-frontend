@@ -1,7 +1,14 @@
 import React from 'react'
 
+import { Dayjs } from 'dayjs';
+
 import Slider from '@mui/material/Slider';
+import Divider from '@mui/material/Divider';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers';
 import '../styles/LakeFilterBox.css';
+import '../styles/Map.css';
 import { DEFAULT_LAKE_COUNT_LIMIT, MAX_LAKE_COUNT_LIMIT } from './Map';
 import { debounce } from './debounce';
 
@@ -11,22 +18,46 @@ import { debounce } from './debounce';
  *
  * @param onLimitChange - Callback function to handle the change in lake count limit.
  */
-export function LakeFilterBox({ onLimitChange }: { onLimitChange: (value: number) => void }) {
-  const debouncedOnLimitChange = debounce(onLimitChange, 500)
+export function LakeFilterBox({ 
+    onLimitChange, 
+    date,
+    setDate 
+  }: 
+  { 
+    onLimitChange: (value: number) => void,
+    date: Dayjs | null,
+    setDate: (value: Dayjs | null) => void 
+  }) {
+
+  const debouncedOnLimitChange = debounce(onLimitChange, 700)
 
   return (
     <div className='lake-filter-box'>
-      <label>Number of Lakes:</label>
-      <Slider
-        className='slider'
-        aria-label="Default"
-        valueLabelDisplay="auto"
-        onChange={(_, value) => debouncedOnLimitChange(value as number)}
-        min={0}
-        max={MAX_LAKE_COUNT_LIMIT}
-        step={50}
-        defaultValue={DEFAULT_LAKE_COUNT_LIMIT}
-      />
+      <div>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+              label="Date"
+              value={date}
+              onChange={setDate}
+          />
+        </LocalizationProvider>
+      </div>
+
+      <Divider style={{margin: "3px"}}/>
+      
+      <div>
+        <label id="num-lakes-label" style={{marginLeft: "3px" }}>Number of Lakes:</label>
+        <Slider
+          aria-labelledby="num-lakes-label"
+          aria-label="Number of Lakes:"
+          valueLabelDisplay="auto"
+          onChange={(_, value) => debouncedOnLimitChange(value as number)}
+          min={0}
+          max={MAX_LAKE_COUNT_LIMIT}
+          step={50}
+          defaultValue={DEFAULT_LAKE_COUNT_LIMIT}
+        />
+      </div>
     </div>
   );
 }

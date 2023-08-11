@@ -29,7 +29,7 @@ export function LakeFilterBox({
     setDate: (value: Dayjs | null) => void 
   }) {
 
-  const debouncedOnLimitChange = debounce(onLimitChange, 700)
+  const debouncedOnLimitChange = debounce(onLimitChange, 200)
 
   return (
     <div className='lake-filter-box'>
@@ -39,6 +39,7 @@ export function LakeFilterBox({
               label="Date"
               value={date}
               onChange={setDate}
+              format="YYYY-MM-DD"
           />
         </LocalizationProvider>
       </div>
@@ -51,7 +52,7 @@ export function LakeFilterBox({
           aria-labelledby="num-lakes-label"
           aria-label="Number of Lakes:"
           valueLabelDisplay="auto"
-          onChange={(_, value) => debouncedOnLimitChange(value as number)}
+          onChangeCommitted={(_, value) => debouncedOnLimitChange(value as number)}          
           min={0}
           max={MAX_LAKE_COUNT_LIMIT}
           step={50}

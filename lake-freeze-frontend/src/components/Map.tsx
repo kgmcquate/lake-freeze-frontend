@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { LakeMarker } from './LakeMarker';
 import { LakeFilterBox } from './LakeFilterBox';
 import { LoadingBox } from './LoadingBox';
-import { mapStyles, clusterStyles } from './mapStyles';
+import { mapStyles, clusterStyles } from '../styles/mapStyles';
 import { WaterBody, WaterBodyWeatherReport, WaterBodyInfo } from './models';
 import '../styles/Map.css';
 
@@ -72,7 +72,7 @@ const Map: React.FunctionComponent = () => {
       );
       const reports: WaterBodyWeatherReport[] = await weatherReportResponse.json();
 
-      console.log(reports)
+      // console.log(reports)
 
       const lakeInfos: WaterBodyInfo[] = waterbodies.map(waterbody => ({
           lakeWeatherReport: reports.find(report => report.waterbody_id === waterbody.id),
@@ -80,7 +80,7 @@ const Map: React.FunctionComponent = () => {
         })
       )
 
-      console.log(lakeInfos)
+      // console.log(lakeInfos)
 
       setLakeInfos(lakeInfos);
       setLoading(false);
@@ -162,7 +162,7 @@ const Map: React.FunctionComponent = () => {
 
         {loading ? <LoadingBox /> : null}
         
-        <MarkerClusterer styles={clusterStyles}>
+        <MarkerClusterer styles={clusterStyles} >
           {(clusterer) => (
             <div>
               {lakeInfos?.map((lakeInfo) => (

@@ -19,12 +19,12 @@
     /* background-blend-mode: normal; */
     border: solid;
     border-width: 3px;
-    border-color: gray;
+    border-color: var(--primary-border-color);
     backdrop-filter: blur(4px);
     /* float: "left"; */
-    font-family: "Verdana";
+    font-family: var(--primary-font);
     font-size: large;
-    color: white;
+    color: var(--primary-text-color);
     /* text-shadow: 3px; */
 }
 

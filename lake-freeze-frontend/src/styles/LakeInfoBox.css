@@ -1,33 +1,10 @@
 .lake-info-box {
-    /* bottom: 0;
-    left: 0;
-    width: 15%;
-    height: 5%; */
-    /* display: flex;
-    flex-direction: column; */
-    /* padding: 0px;
-    border: 0px; */
     border-radius: 10px;
-    /* max-width: 100%; */
     margin: 0px;
-    /* position: relative; */
-    /* z-index: 0; */
-    background-color: rgb(210, 210, 210) !important;
+    background-color: var(--primary-bg-color) !important;
     font-size: medium;
-    font-family: "Roboto";
+    font-family: var(--primary-font);
     font-weight: normal;
-    /* backdrop-filter: blur(4px); */
-    /* background-color: rgb(103, 187, 255); */
-    /* background-blend-mode: normal; */
-    /* border: solid; */
-    /* border-width: 3px; */
-    /* border-color: gray; */
-    /* backdrop-filter: blur(4px); */
-    /* float: "left"; */
-    /* font-family: "Verdana"; */
-    /* font-size: large; */
-    /* color: blue; */
-    /* text-shadow: 3px; */
 }
 
 li {
@@ -39,7 +16,7 @@ li {
 .gm-style .gm-style-iw-c,
 .gm-style .gm-style-iw-t::after,
 .gm-style .gm-style-iw-tc::after { 
-    background-color: rgb(210, 210, 210) !important;
+    background-color: var(--primary-bg-color) !important;
 }
 
 
@@ -48,11 +25,11 @@ li {
 .gm-style .gm-style-iw-c,
 .gm-style .gm-style-iw-t::after,
 .gm-style .gm-style-iw-tc::after { 
-    background-color: rgb(210, 210, 210) !important;
+    background-color: var(--primary-bg-color) !important;
     border-radius: 10px;
     border: solid;
     border-width: 3px;
-    border-color: gray;
+    border-color: var(--primary-border-color);
 }
 
 

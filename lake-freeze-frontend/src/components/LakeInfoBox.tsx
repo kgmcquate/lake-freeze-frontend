@@ -111,6 +111,25 @@ export function LakeInfoBox({
   [date, waterBodyInfo]
   )
 
+  var imageCaption = "Satellite Image"
+  if (imageInfo && date) {
+    const imageDate = dayjs(imageInfo.captured_ts)
+    const imageTakenDays = date.diff(imageDate, 'day')
+    const imageTakenDaysAbs = Math.abs(imageTakenDays)
+    const dateStr = date?.format("YYYY-MM-DD")
+
+    const daysWord = imageTakenDaysAbs === 1 ? "day" : "days"
+ 
+    if (imageTakenDays > 0) {
+      imageCaption += ` (taken ${imageTakenDays} ${daysWord} before ${dateStr})`
+    } else if (imageTakenDays < 0) {
+      imageCaption += ` (taken ${imageTakenDaysAbs} ${daysWord} after ${dateStr})`
+    } else if (imageTakenDays === 0) {
+      imageCaption += ` (taken on ${dateStr})`
+    }   
+  }
+
+  imageCaption += ":"
 
   const innerElement = (
     <div className='lake-info-box' id='activebox'>
@@ -124,22 +143,43 @@ export function LakeInfoBox({
             <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
             : null
           }
-          {dailyWeather ? <ListItem>Temperature (&deg;C): {(dailyWeather.temperature_2m_max + dailyWeather.temperature_2m_min / 2).toFixed(1) }</ListItem> : null}
-          {waterBodyInfo.lake.areasqkm ? <ListItem>Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm.toFixed(0)}</ListItem> : null}
-          {waterBodyInfo.lake.max_depth_m ? <ListItem>Max Depth (m): {waterBodyInfo.lake.max_depth_m.toFixed(0)}</ListItem> : null}
-          <ListItem>Position: {Number(waterBodyInfo.lake.latitude).toFixed(3)}, {Number(waterBodyInfo.lake.longitude).toFixed(3)}</ListItem>
+          {dailyWeather ? 
+            <ListItem>
+              Temperature (&deg;C): 
+              {(dailyWeather.temperature_2m_max + dailyWeather.temperature_2m_min / 2).toFixed(1)}
+            </ListItem> 
+            : null
+          }
+          {waterBodyInfo.lake.areasqkm ? 
+            <ListItem>
+              Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm.toFixed(0)}
+            </ListItem> 
+            : null
+          }
+          {waterBodyInfo.lake.max_depth_m ? 
+            <ListItem>
+              Max Depth (m): {waterBodyInfo.lake.max_depth_m.toFixed(0)}
+            </ListItem> 
+            : null
+          }
+          <ListItem>
+            Position: {Number(waterBodyInfo.lake.latitude).toFixed(3)}, {Number(waterBodyInfo.lake.longitude).toFixed(3)}
+          </ListItem>
           {thumbnailUrl ? 
           <ListItem style={{flexDirection: "column"}}>
-            {/* <ListItemText> */}
-              Satellite Image {`(taken ${imageInfo && date ? Math.abs(date.diff(dayjs(imageInfo.captured_ts), 'day')) : null} days from ${date?.format("YYYY-MM-DD")} )`}: 
-
-
-            {/* </ListItemText> */}
+              {imageCaption}
             <Divider/>
-            
             <ListItemIcon>
-
-              <img src={thumbnailUrl} alt="Loading..." style={{minWidth: 300, maxHeight: 300, borderRadius: "10px", border: "solid", borderColor: "gray", marginTop: "3%"}}/>
+              <img 
+                src={thumbnailUrl} 
+                alt="Loading..." 
+                style={{minWidth: 300, 
+                  maxHeight: 300, 
+                  borderRadius: "10px", 
+                  border: "solid", 
+                  borderColor: "gray", 
+                  marginTop: "3%"}}
+              />
             </ListItemIcon>
           </ListItem> 
           : null}

@@ -1,9 +1,44 @@
 
+export function getHexColor(cssVariable: string, rootStyle = getComputedStyle(document.body)): string {
+    function componentToHex(c: number) {
+        var hex = c.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r: number, g: number, b: number) {
+        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function parseRgbString(str: string) {
+        return str.replace("rgb(", "").replace(")", "").replace(" ", "").split(",").map((x: string) => {return Number(x)})
+    }
+
+    const cssVariableValue = rootStyle.getPropertyValue(cssVariable);
+
+    if (cssVariableValue.startsWith("rgb(")) {
+        return rgbToHex(
+            parseRgbString(cssVariableValue)[0],
+            parseRgbString(cssVariableValue)[1],
+            parseRgbString(cssVariableValue)[2],
+        )
+    } else {
+        return cssVariableValue
+    }
+}
+
+// getHexColor("--primary-bg-color")
+// getHexColor("--primary-border-color")
+// getHexColor("--primary-text-color")
+// getHexColor("--primary-highlight-color")
+// getHexColor("--secondary-highlight-color")
+
+
 export const clusterStyles = [1,2,3].map(x => {return {  
     height: x*32, 
     width: x*32,
-    textColor: '#ffffff', 
-    url: process.env.PUBLIC_URL + `/icons8-circle-96.png`
+    textColor: getHexColor("--primary-text-color"), 
+    fontFamily: "Roboto",
+    url: process.env.PUBLIC_URL + `/icons8-circle-96.png` //"/circle-solid.svg" // //
   }}
 )
 
@@ -14,7 +49,7 @@ export const mapStyles = [
         "elementType": "labels.text.fill",
         "stylers": [
             {
-                "color": "#ffffff"
+                "color": getHexColor("--primary-border-color")
             }
         ]
     },
@@ -44,7 +79,7 @@ export const mapStyles = [
         "elementType": "geometry.stroke",
         "stylers": [
             {
-                "color": "#144b53"
+                "color": getHexColor("--primary-border-color")
             },
             {
                 "lightness": 14
@@ -59,7 +94,7 @@ export const mapStyles = [
         "elementType": "all",
         "stylers": [
             {
-                "color": "#08304b"
+                "color": getHexColor("--primary-border-color")
             }
         ]
     },
@@ -68,7 +103,7 @@ export const mapStyles = [
         "elementType": "geometry",
         "stylers": [
             {
-                "color": "#0c4152"
+                "color": getHexColor("--primary-border-color")
             },
             {
                 "lightness": 5
@@ -89,7 +124,7 @@ export const mapStyles = [
         "elementType": "geometry.stroke",
         "stylers": [
             {
-                "color": "#0b434f"
+                "color": getHexColor("--primary-border-color")
             },
             {
                 "lightness": 25
@@ -110,7 +145,7 @@ export const mapStyles = [
         "elementType": "geometry.stroke",
         "stylers": [
             {
-                "color": "#0b3d51"
+                "color": getHexColor("--primary-border-color")
             },
             {
                 "lightness": 16
@@ -131,7 +166,7 @@ export const mapStyles = [
         "elementType": "all",
         "stylers": [
             {
-                "color": "#146474"
+                "color": getHexColor("--primary-border-color")
             }
         ]
     },
@@ -140,7 +175,7 @@ export const mapStyles = [
         "elementType": "all",
         "stylers": [
             {
-                "color": "#021019"
+                "color": getHexColor("--primary-border-color")
             }
         ]
     }

@@ -14,7 +14,7 @@ export function Legend() {
             <div>
                 cluster
                 <div>
-                    <img src='cluster-circle.svg' width={"30px"} alt=""/>
+                    <img src={`${process.env.PUBLIC_URL}/cluster-circle.svg`} width={"30px"} alt=""/>
                     
                 </div>
             </div>       
@@ -23,7 +23,7 @@ export function Legend() {
             <div>
                 liquid
                 <div>
-                    <img src='lake.svg' width={"30px"} alt=""/>
+                    <img src={`${process.env.PUBLIC_URL}/lake.svg`} width={"30px"} alt=""/>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@ export function Legend() {
             <div>
                 frozen
                 <div>
-                    <img src='lake-frozen.svg' width={"30px"} alt=""/>
+                    <img src={`${process.env.PUBLIC_URL}/lake-frozen.svg`} width={"30px"} alt=""/>
                 </div>
             </div>
         </div>

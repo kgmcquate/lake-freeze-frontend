@@ -8,8 +8,8 @@ import '../styles/LakeMarker.css'
 
 import { WaterBodyInfo } from './models'
 
-const icePngUrl = "lake-frozen.svg";
-const waterPngUrl = "lake.svg";
+const icePngUrl = process.env.PUBLIC_URL + "/lake-frozen.svg";
+const waterPngUrl = process.env.PUBLIC_URL + "/lake.svg";
 
 
 /**

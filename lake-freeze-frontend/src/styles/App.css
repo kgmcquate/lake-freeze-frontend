@@ -1,12 +1,4 @@
-:root {
-  --primary-bg-color: rgb(210, 210, 210);
-  --primary-border-color: rgb(121, 121, 121);
-  --primary-text-color: rgb(0, 0, 0);
-  --primary-highlight-color: rgb(0, 208, 255);
-  --secondary-highlight-color: rgb(8, 45, 53);
-  --primary-font: "Roboto"
-}
-
 .App {
   text-align: center;
+  font-family: var(--primary-font);
 }

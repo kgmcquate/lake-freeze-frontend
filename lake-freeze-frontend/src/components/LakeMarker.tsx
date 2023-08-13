@@ -8,8 +8,8 @@ import '../styles/LakeMarker.css'
 
 import { WaterBodyInfo } from './models'
 
-const icePngUrl = "https://img.icons8.com/emoji/24/000000/ice.png";
-const waterPngUrl = "https://img.icons8.com/color/24/000000/water.png";
+const icePngUrl = "lake-frozen.svg";
+const waterPngUrl = "lake.svg";
 
 
 /**
@@ -47,7 +47,10 @@ export function LakeMarker({
         <Marker
           position={{ lat: latNum, lng: longNum }}
           icon={{
+            // size: new google.maps.Size(32, 32),
+            scaledSize: new google.maps.Size(30, 30),
             url: lakeInfo.lakeWeatherReport?.is_frozen ? icePngUrl : waterPngUrl
+            
           }}          
           clusterer={clusterer}
           onClick={() => handleActiveMarker(lakeInfo.lake.id)}

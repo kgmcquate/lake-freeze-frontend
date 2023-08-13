@@ -7,8 +7,17 @@
 
 import React from 'react';
 import './styles/App.css';
+import './styles/theme-variables.css';
+import { theme } from './styles/muiTheme'
 import { useLoadScript } from '@react-google-maps/api';
 import Map from "./components/Map";
+
+
+
+
+import { ThemeProvider } from '@mui/material/styles';
+
+
 
 
 // TODO: Add filter sliders for depth, area, limit
@@ -22,9 +31,6 @@ const googleMapsLibraries: ("places")[] = ["places"];
 
 const googleMapsApiKey: string | undefined = process.env.REACT_APP_GOOGLE_MAPS_API_KEY!;
 
-
-
-
 const App: React.FunctionComponent = () => {
   // Load Google Maps API script
   const { isLoaded }: { isLoaded: boolean } = useLoadScript({
@@ -37,7 +43,9 @@ const App: React.FunctionComponent = () => {
   if (isLoaded) {
     return (
       <div>
-        <Map></Map>
+        <ThemeProvider theme={theme}>
+          <Map></Map>
+        </ThemeProvider>
       </div>
     )
   } else {

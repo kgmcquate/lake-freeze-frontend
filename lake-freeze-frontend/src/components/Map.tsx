@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { LakeMarker } from './LakeMarker';
 import { LakeFilterBox } from './LakeFilterBox';
 import { LoadingBox } from './LoadingBox';
+import { Legend } from './Legend';
 import { mapStyles, clusterStyles } from '../styles/mapStyles';
 import { WaterBody, WaterBodyWeatherReport, WaterBodyInfo } from './models';
 import '../styles/Map.css';
@@ -154,14 +155,17 @@ const Map: React.FunctionComponent = () => {
           styles: mapStyles,
         }}
       >
+
+        {loading ? <LoadingBox /> : null}
+        
         <LakeFilterBox 
           date={date}
           setDate={setDate}
           onLimitChange={onLimitChange} 
         />
 
-        {loading ? <LoadingBox /> : null}
-        
+        <Legend></Legend>
+
         <MarkerClusterer styles={clusterStyles} >
           {(clusterer) => (
             <div>

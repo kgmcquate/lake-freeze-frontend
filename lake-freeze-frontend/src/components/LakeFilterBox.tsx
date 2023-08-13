@@ -4,6 +4,7 @@ import { Dayjs } from 'dayjs';
 
 import Slider from '@mui/material/Slider';
 import Divider from '@mui/material/Divider';
+
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -44,7 +45,7 @@ export function LakeFilterBox({
         </LocalizationProvider>
       </div>
 
-      <Divider style={{margin: "3px"}}/>
+      <Divider style={{margin: "3px"}} />
       
       <div>
         <label id="num-lakes-label" style={{marginLeft: "3px" }}>Number of Lakes:</label>
@@ -52,7 +53,8 @@ export function LakeFilterBox({
           aria-labelledby="num-lakes-label"
           aria-label="Number of Lakes:"
           valueLabelDisplay="auto"
-          onChangeCommitted={(_, value) => debouncedOnLimitChange(value as number)}          
+          onChangeCommitted={(_, value) => debouncedOnLimitChange(value as number)}     
+          color='primary'     
           min={0}
           max={MAX_LAKE_COUNT_LIMIT}
           step={50}

@@ -1,0 +1,20 @@
+/* :root {
+    --primary-bg-color: rgb(210, 210, 210);
+    --primary-border-color: rgb(160, 160, 160);
+    --primary-text-color: rgba(20, 20, 20, 0.6);
+    --primary-highlight-color: rgb(106, 176, 189);
+    --secondary-highlight-color: rgb(195, 230, 222);
+    --primary-font: "Roboto";
+    --border-radius: 10px;
+  } */
+
+:root {
+  --primary-bg-color: #d1dbe4;
+  --primary-border-color: #5c6268;
+  --secondary-border-color: #30465c;
+  --primary-text-color: rgba(20, 20, 20, 1);
+  --primary-highlight-color: #3dd1eb;
+  --secondary-highlight-color: #00ffb3;
+  --primary-font: "Roboto";
+  --border-radius: 12px;
+}

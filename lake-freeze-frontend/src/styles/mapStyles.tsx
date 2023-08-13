@@ -1,3 +1,5 @@
+import './theme-variables.css';
+
 
 export function getHexColor(cssVariable: string, rootStyle = getComputedStyle(document.body)): string {
     function componentToHex(c: number) {
@@ -34,11 +36,11 @@ export function getHexColor(cssVariable: string, rootStyle = getComputedStyle(do
 
 
 export const clusterStyles = [1,2,3].map(x => {return {  
-    height: x*32, 
-    width: x*32,
+    height: x*38, 
+    width: x*38,
     textColor: getHexColor("--primary-text-color"), 
     fontFamily: "Roboto",
-    url: process.env.PUBLIC_URL + `/icons8-circle-96.png` //"/circle-solid.svg" // //
+    url: process.env.PUBLIC_URL + "/cluster-circle.svg" //`/icons8-circle-96.png` //"/circle-solid.svg" // //
   }}
 )
 

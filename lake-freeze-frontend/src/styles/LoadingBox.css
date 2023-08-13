@@ -1,31 +1,23 @@
 .loading-box {
     display: flex;
     flex-direction: column;
-    position: relative;
-    margin: 0 auto;
-    margin-top: 25%;
-    width: 20%;
-    height: 20%;
+    position: absolute;
+    left: 40%;
+    top: 35%;
+    width: 10%;
+    height: 10%;    
     text-align: center;
-    /* display: flex;
-    flex-direction: column; */
     padding: 5%;
-    border-radius: 24px;
+    border-radius: var(--border-radius);
     max-width: 100%;
-    /* margin: auto; */
-    /* z-index: 0; */
-    /* background-color: #0b434f; */
-    /* background-color: rgb(103, 187, 255); */
-    /* background-blend-mode: normal; */
     border: solid;
     border-width: 3px;
     border-color: var(--primary-border-color);
-    backdrop-filter: blur(4px);
-    /* float: "left"; */
-    font-family: var(--primary-font);
+    backdrop-filter: blur(6px);
+    font-family: var(--primary-font) !important;
     font-size: large;
-    color: var(--primary-text-color);
-    /* text-shadow: 3px; */
+    font-weight: bold;
+    color: var(--primary-highlight-color);
 }
 
 .loading-circle {

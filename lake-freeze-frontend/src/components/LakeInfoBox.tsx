@@ -137,7 +137,10 @@ export function LakeInfoBox({
         <Typography variant="h6" component="h6" style={{marginBottom: "0px"}}>
           {waterBodyInfo.lake.name}
         </Typography>
-        <List style={{marginTop: "0px", padding: "0px", marginBlock: "0px"}}>
+        
+        <Divider style={{margin: "3px"}}/>
+
+        <List style={{marginLeft: "6px", padding: "2px", marginBlock: "0px"}}>
           {/* <li>Date: {waterBodyInfo.lakeWeatherReport?.date}</li> */}
           {waterBodyInfo.lakeWeatherReport && waterBodyInfo.lakeWeatherReport.ice_m > 0 ?
             <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
@@ -173,12 +176,7 @@ export function LakeInfoBox({
               <img 
                 src={thumbnailUrl} 
                 alt="Loading..." 
-                style={{minWidth: 300, 
-                  maxHeight: 300, 
-                  borderRadius: "10px", 
-                  border: "solid", 
-                  borderColor: "gray", 
-                  marginTop: "3%"}}
+                className='lake-info-img'
               />
             </ListItemIcon>
           </ListItem> 

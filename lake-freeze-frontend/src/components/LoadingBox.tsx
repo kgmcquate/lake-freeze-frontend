@@ -11,7 +11,7 @@ export function LoadingBox() {
     return (
         <div className='loading-box'>
             Loading Weather Data...
-            <CircularProgress className='loading-circle' size="100px"/>
+            <CircularProgress className='loading-circle' size="100px" style={{marginTop: "30px"}}/>
         </div>
         
     )

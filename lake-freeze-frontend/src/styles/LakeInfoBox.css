@@ -1,10 +1,21 @@
 .lake-info-box {
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     margin: 0px;
     background-color: var(--primary-bg-color) !important;
     font-size: medium;
     font-family: var(--primary-font);
+    color: var(--primary-text-color);
     font-weight: normal;
+}
+
+.lake-info-img {
+    border-radius: var(--border-radius) !important;
+    border: solid !important;
+    border-width: 3px;
+    border-color: var(--primary-border-color) !important;
+    min-width: 300;
+    max-height: 300;
+    margin-top: 10px;
 }
 
 li {

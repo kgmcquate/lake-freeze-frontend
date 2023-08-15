@@ -148,20 +148,38 @@ export function LakeInfoBox({
           }
           {dailyWeather ? 
             <ListItem>
-              Temperature (&deg;C): 
-              {(dailyWeather.temperature_2m_max + dailyWeather.temperature_2m_min / 2).toFixed(1)}
+              Temperature (&deg;C): {(dailyWeather.temperature_2m_max + dailyWeather.temperature_2m_min / 2).toFixed(1)}
+            </ListItem> 
+            : null
+          }
+          {dailyWeather && dailyWeather.precipitation_sum ? 
+
+            <ListItem>
+              Precipitation (&deg;C): {(dailyWeather.precipitation_sum).toFixed(1)}
+            </ListItem> 
+            : null
+          }
+          {dailyWeather ? 
+            <ListItem>
+              Sunrise: {(dayjs(dailyWeather.sunrise)).format('h:mm A')}
+            </ListItem> 
+            : null
+          }
+          {dailyWeather ? 
+            <ListItem>
+              Sunset: {(dayjs(dailyWeather.sunset)).format('h:mm A')}
             </ListItem> 
             : null
           }
           {waterBodyInfo.lake.areasqkm ? 
             <ListItem>
-              Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm.toFixed(0)}
+              Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm.toFixed(1)}
             </ListItem> 
             : null
           }
           {waterBodyInfo.lake.max_depth_m ? 
             <ListItem>
-              Max Depth (m): {waterBodyInfo.lake.max_depth_m.toFixed(0)}
+              Max Depth (m): {waterBodyInfo.lake.max_depth_m.toFixed(1)}
             </ListItem> 
             : null
           }
@@ -169,7 +187,7 @@ export function LakeInfoBox({
             Position: {Number(waterBodyInfo.lake.latitude).toFixed(3)}, {Number(waterBodyInfo.lake.longitude).toFixed(3)}
           </ListItem>
           {thumbnailUrl ? 
-          <ListItem style={{flexDirection: "column"}}>
+          <ListItem style={{flexDirection: "column", marginTop: "3px"}}>
               {imageCaption}
             <Divider/>
             <ListItemIcon>

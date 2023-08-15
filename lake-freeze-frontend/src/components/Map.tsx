@@ -156,7 +156,7 @@ const Map: React.FunctionComponent = () => {
         }}
       >
 
-        {loading ? <LoadingBox /> : null}
+        <LoadingBox isLoading={loading}/>
         
         <LakeFilterBox 
           date={date}

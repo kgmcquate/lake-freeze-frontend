@@ -1,27 +1,29 @@
 .loading-box {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     position: absolute;
     left: 40%;
-    top: 35%;
-    width: 10%;
-    height: 10%;    
-    text-align: center;
-    padding: 5%;
-    border-radius: var(--border-radius);
-    max-width: 100%;
-    border: solid;
+    top: 35%; */
+    /* width: 10%;
+    height: 10%;     */
+    /* text-align: center; */
+    
+    /* padding: 10%; */
+    /* margin: 10%; */
+    /* border-radius: var(--border-radius); */
+    /* min-width: 30%;
+    max-width: 100%; */
+    /* border: solid;
     border-width: 3px;
-    border-color: var(--primary-border-color);
-    backdrop-filter: blur(6px);
-    font-family: var(--primary-font) !important;
+    border-color: var(--primary-border-color); */
+    /* backdrop-filter: blur(2px); */
+    /* font-family: var(--primary-font) !important;
     font-size: large;
     font-weight: bold;
-    color: var(--primary-highlight-color);
+    color: var(--primary-highlight-color); */
 }
 
 .loading-circle {
-    position: relative;
-    margin: auto;
-
+    min-width: 120px;
+    min-height: 120px;
 }

@@ -3,8 +3,6 @@ import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
 
 import Backdrop from '@mui/material/Backdrop';
-import Button from '@mui/material/Button';
-
 import '../styles/LoadingBox.css'
 
 /**
@@ -27,12 +25,4 @@ export function LoadingBox({
         </Backdrop>
       </div>
     );
-
-    // return (
-    //     <div className='loading-box'>
-    //         Loading Weather Data...
-    //         <CircularProgress className='loading-circle' size="100px" style={{marginTop: "30px"}}/>
-    //     </div>
-        
-    // )
 }

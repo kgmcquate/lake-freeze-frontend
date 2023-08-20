@@ -174,10 +174,10 @@ export function LakeInfoBox({
             <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
             : null
           }
-          {predictedWhiteFraction ?
+          {/* {predictedWhiteFraction ?
             <ListItem>Predicted Snow Cover (%): {(predictedWhiteFraction * 100).toFixed(0)}</ListItem> 
             : null
-          }
+          } */}
           
           {dailyWeather ? 
             <ListItem>

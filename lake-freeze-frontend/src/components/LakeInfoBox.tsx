@@ -48,6 +48,7 @@ export function LakeInfoBox({
   const [imageInfo, setImageInfo] = useState<WaterBodySatelliteImage | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [dailyWeather, setDailyWeather] = useState<DailyWeather | null>(null);
+  const [predictedWhiteFraction, setPredictedWhiteFraction] = useState<number | null>(null);
 
 
   useEffect(() => {
@@ -111,6 +112,33 @@ export function LakeInfoBox({
   [date, waterBodyInfo]
   )
 
+  
+
+  useEffect(() => {
+    async function fetchPredictedWhiteFraction() {
+      if (date === null) {
+        return
+      }
+
+      const response = await fetch(
+        `${process.env.REACT_APP_LAKES_API_URL}/predict_white_fraction?${new URLSearchParams({
+          date: date.format("YYYY-MM-DD"),
+          latitude: waterBodyInfo.lake.latitude,
+          longitude: waterBodyInfo.lake.longitude          
+        })}`
+      );
+
+      const predictedWhiteFraction: number = await response.json();
+
+      setPredictedWhiteFraction(predictedWhiteFraction)
+    }
+
+    fetchPredictedWhiteFraction()
+  },
+  [date, waterBodyInfo]
+  )
+
+
   var imageCaption = "Satellite Image"
   if (imageInfo && date) {
     const imageDate = dayjs(imageInfo.captured_ts)
@@ -146,6 +174,11 @@ export function LakeInfoBox({
             <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
             : null
           }
+          {predictedWhiteFraction ?
+            <ListItem>Predicted Snow Cover (%): {(predictedWhiteFraction * 100).toFixed(0)}</ListItem> 
+            : null
+          }
+          
           {dailyWeather ? 
             <ListItem>
               Temperature (&deg;C): {(dailyWeather.temperature_2m_max + dailyWeather.temperature_2m_min / 2).toFixed(1)}

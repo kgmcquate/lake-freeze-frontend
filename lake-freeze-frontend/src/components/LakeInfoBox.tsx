@@ -139,6 +139,7 @@ export function LakeInfoBox({
   )
 
 
+  // Build the image caption string
   var imageCaption = "Satellite Image"
   if (imageInfo && date) {
     const imageDate = dayjs(imageInfo.captured_ts)
@@ -174,10 +175,15 @@ export function LakeInfoBox({
             <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
             : null
           }
-          {/* {predictedWhiteFraction ?
+          {predictedWhiteFraction && predictedWhiteFraction > 0.3 ?
             <ListItem>Predicted Snow Cover (%): {(predictedWhiteFraction * 100).toFixed(0)}</ListItem> 
             : null
-          } */}
+          }
+
+          {imageInfo && imageInfo.white_fraction > 0.3 ?
+            <ListItem>Actual Snow Cover (on {dayjs(imageInfo.captured_ts).format("YYYY-MM-DD")}) (%): {(imageInfo.white_fraction * 100).toFixed(0)}</ListItem> 
+            : null
+          }
           
           {dailyWeather ? 
             <ListItem>

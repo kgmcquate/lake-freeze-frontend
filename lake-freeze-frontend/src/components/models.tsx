@@ -70,4 +70,5 @@ export interface WaterBodySatelliteImage {
   red_average: number;
   green_average: number;
   blue_average: number;
+  white_fraction: number;
 }

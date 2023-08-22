@@ -71,9 +71,9 @@ export function LakeFilterBox({
       <Divider/>
 
       <div style={{marginBottom: "0px", marginTop: "1px", padding: "0px"}}>
-        Created by <a href={HOME_URL} target='_blank' style={{color: getHexColor("--primary-highlight-color")}}>Kevin McQuate</a>
+        Created by <a href={HOME_URL} target='_blank' rel="noreferrer" style={{color: getHexColor("--primary-highlight-color")}}>Kevin McQuate</a>
         <Tooltip title={"Written in React.js, click for more info"} placement="right" arrow leaveDelay={200}>
-          <a href={WEBSITE_INFO_URI} target="_blank" color='white'>
+          <a href={WEBSITE_INFO_URI} target="_blank" rel="noreferrer" color='white'>
             <IconButton size="small">
               <Info/>
             </IconButton>

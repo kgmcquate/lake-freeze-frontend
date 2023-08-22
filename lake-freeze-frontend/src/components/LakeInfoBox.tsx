@@ -201,7 +201,7 @@ export function LakeInfoBox({
                   <ListItem>
                     Predicted Snow Cover (%): {(predictedWhiteFraction * 100).toFixed(0)}
                     <Tooltip title={"XGBoost model, click for more info"} placement="right" arrow leaveDelay={200}>
-                      <a href={ML_MODEL_INFO_URI} target="_blank" color='white'>
+                      <a href={ML_MODEL_INFO_URI} target="_blank" rel="noreferrer" color='white'>
                         <IconButton size="small">
                           <Info/>
                         </IconButton>
@@ -235,7 +235,7 @@ export function LakeInfoBox({
                   <div>
                     {imageCaption}
                     <Tooltip title={"From Google Earth API, click for info"} placement="right" arrow leaveDelay={200}>
-                      <a href={SATELLITE_IMAGE_INFO_URI} target="_blank" color='white'>
+                      <a href={SATELLITE_IMAGE_INFO_URI} target="_blank" rel="noreferrer" color='white'>
                         <IconButton size="small">
                           <Info/>
                         </IconButton>
@@ -301,7 +301,7 @@ export function LakeInfoBox({
 
                       <ListItem>
                         <Tooltip title={"From Open-Meteo API, click for info"} placement="right" arrow leaveDelay={200}>
-                          <a href={WEATHER_ETL_INFO_URI} target="_blank" color='white'>
+                          <a href={WEATHER_ETL_INFO_URI} target="_blank" rel="noreferrer" color='white'>
                             <IconButton size="small">
                               <Info/>
                             </IconButton>

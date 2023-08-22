@@ -1,6 +1,7 @@
 .lake-info-box {
     border-radius: var(--border-radius);
     margin: 0px;
+    min-width: 300px;
     background-color: var(--primary-bg-color) !important;
     font-size: medium;
     font-family: var(--primary-font);
@@ -15,7 +16,22 @@
     border-color: var(--primary-border-color) !important;
     min-width: 300;
     max-height: 300;
-    margin-top: 10px;
+    /* margin-top: 10px; */
+}
+
+.info-icon {
+    height: 18px !important;
+    width: 18px !important;
+    margin-left: 6px;
+}
+
+.list-button {
+    padding: 2px !important;
+}
+
+.collapsible {
+    margin-left: 12px;
+    font-size: 14px;
 }
 
 li {

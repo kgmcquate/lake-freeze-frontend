@@ -10,7 +10,6 @@ import { mapStyles, clusterStyles } from '../styles/mapStyles';
 import { WaterBody, WaterBodyWeatherReport, WaterBodyInfo } from './models';
 import '../styles/Map.css';
 
-
 /**
  * Calculates the average value of an array.
  * @param arr - Array of numbers
@@ -22,9 +21,11 @@ export const DEFAULT_LAKE_COUNT_LIMIT = 200;
 export const MAX_LAKE_COUNT_LIMIT = 1000;
 const DEFAULT_ZOOM = 7;
 export const SATELLITE_IMAGE_PREFIX = "water_body_satellite_images/"
-
-
-
+export const ML_MODEL_INFO_URI = "https://github.com/kgmcquate/ice-thickness-ml-models"
+export const WEATHER_ETL_INFO_URI = "https://github.com/kgmcquate/weather-etl"
+export const SATELLITE_IMAGE_INFO_URI = "https://github.com/kgmcquate/lake-satellite-image-etl"
+export const WEBSITE_INFO_URI = "https://github.com/kgmcquate/lake-freeze-frontend"
+export const HOME_URL = "https://home.kevin-mcquate.net/"
 
 /**
  * Map component responsible for displaying the Google Map and markers.

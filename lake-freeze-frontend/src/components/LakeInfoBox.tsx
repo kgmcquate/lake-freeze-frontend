@@ -2,15 +2,25 @@ import React, { useEffect, useState } from 'react'
 
 import { InfoWindow } from '@react-google-maps/api';
 import '../styles/LakeInfoBox.css';
-import { SATELLITE_IMAGE_PREFIX } from './Map'
+import { SATELLITE_IMAGE_PREFIX, ML_MODEL_INFO_URI, WEATHER_ETL_INFO_URI, SATELLITE_IMAGE_INFO_URI } from './Map'
 
 import Divider from '@mui/material/Divider';
 // import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemButton from '@mui/material/ListItemButton';
 // import ListSubheader from '@mui/material/ListSubheader';
 import Typography from '@mui/material/Typography';
+import Collapse from '@mui/material/Collapse';
+
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
+import { IconButton } from '@mui/material';
+import Info from '@mui/icons-material/InfoOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 import { DailyWeather, WaterBodyInfo, WaterBodySatelliteImage } from './models'
 import dayjs, { Dayjs } from 'dayjs';
@@ -44,6 +54,10 @@ export function LakeInfoBox({
     date: Dayjs | null;
     onCloseClick: (marker: number | null) => void; 
   }) {
+  
+  const [iceInfoOpen, setIceInfoOpen] = React.useState(true);
+  const [weatherInfoOpen, setWeatherInfoOpen] = React.useState(false);
+  const [waterbodyInfoOpen, setWaterbodyInfoOpen] = React.useState(false);
 
   const [imageInfo, setImageInfo] = useState<WaterBodySatelliteImage | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
@@ -140,7 +154,7 @@ export function LakeInfoBox({
 
 
   // Build the image caption string
-  var imageCaption = "Satellite Image"
+  var imageCaption = "Image"
   if (imageInfo && date) {
     const imageDate = dayjs(imageInfo.captured_ts)
     const imageTakenDays = date.diff(imageDate, 'day')
@@ -150,15 +164,14 @@ export function LakeInfoBox({
     const daysWord = imageTakenDaysAbs === 1 ? "day" : "days"
  
     if (imageTakenDays > 0) {
-      imageCaption += ` (taken ${imageTakenDays} ${daysWord} before ${dateStr})`
+      imageCaption += ` taken ${imageTakenDays} ${daysWord} before ${dateStr}`
     } else if (imageTakenDays < 0) {
-      imageCaption += ` (taken ${imageTakenDaysAbs} ${daysWord} after ${dateStr})`
+      imageCaption += ` taken ${imageTakenDaysAbs} ${daysWord} after ${dateStr}`
     } else if (imageTakenDays === 0) {
-      imageCaption += ` (taken on ${dateStr})`
+      imageCaption += ` taken on ${dateStr}`
     }   
   }
 
-  imageCaption += ":"
 
   const innerElement = (
     <div className='lake-info-box' id='activebox'>
@@ -169,75 +182,171 @@ export function LakeInfoBox({
         
         <Divider style={{margin: "3px"}}/>
 
-        <List style={{marginLeft: "6px", padding: "2px", marginBlock: "0px"}}>
-          {/* <li>Date: {waterBodyInfo.lakeWeatherReport?.date}</li> */}
-          {waterBodyInfo.lakeWeatherReport && waterBodyInfo.lakeWeatherReport.ice_m > 0 ?
-            <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
-            : null
-          }
-          {predictedWhiteFraction && predictedWhiteFraction > 0.3 ?
-            <ListItem>Predicted Snow Cover (%): {(predictedWhiteFraction * 100).toFixed(0)}</ListItem> 
-            : null
-          }
 
-          {imageInfo && imageInfo.white_fraction > 0.3 ?
-            <ListItem>Actual Snow Cover (on {dayjs(imageInfo.captured_ts).format("YYYY-MM-DD")}) (%): {(imageInfo.white_fraction * 100).toFixed(0)}</ListItem> 
-            : null
-          }
+        <List style={{marginLeft: "6px", padding: "2px", marginBlock: "0px"}} >
+          <div>
+            <ListItemButton onClick={() => setIceInfoOpen(!iceInfoOpen)} divider disableGutters className='list-button'> 
+              {iceInfoOpen ? <ExpandLess /> : <ExpandMore />}
+              <ListItemText primary="Snow and Ice Cover" />
+            </ListItemButton>
+            <Collapse in={iceInfoOpen} timeout="auto" unmountOnExit className='collapsible'>
+              <List component="div" >
+                {/* <li>Date: {waterBodyInfo.lakeWeatherReport?.date}</li> */}
+                {waterBodyInfo.lakeWeatherReport && waterBodyInfo.lakeWeatherReport.ice_m > 0 ?
+                  <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
+                  : null
+                }
+                {predictedWhiteFraction ?
+                  
+                  <ListItem>
+                    Predicted Snow Cover (%): {(predictedWhiteFraction * 100).toFixed(0)}
+                    <Tooltip title={"XGBoost model, click for more info"} placement="right" arrow leaveDelay={200}>
+                      <a href={ML_MODEL_INFO_URI} target="_blank" color='white'>
+                        <IconButton size="small">
+                          <Info/>
+                        </IconButton>
+                      </a>
+                    </Tooltip>
+                  </ListItem> 
+                  : null
+                }
+
+                {imageInfo ?
+                  <ListItem>Actual Snow Cover (on {dayjs(imageInfo.captured_ts).format("YYYY-MM-DD")}) (%): {(imageInfo.white_fraction * 100).toFixed(0)}</ListItem> 
+                  : null
+                }
+
+
+              </List>
+
+              {/* <Divider/> */}
+
+                {thumbnailUrl ? 
+                <ListItem style={{flexDirection: "column", fontSize: "small"}}>
+                    
+                  
+                  <ListItemIcon>
+                    <img 
+                      src={thumbnailUrl} 
+                      alt="Loading..." 
+                      className='lake-info-img'
+                    />
+                  </ListItemIcon>
+                  <div>
+                    {imageCaption}
+                    <Tooltip title={"From Google Earth API, click for info"} placement="right" arrow leaveDelay={200}>
+                      <a href={SATELLITE_IMAGE_INFO_URI} target="_blank" color='white'>
+                        <IconButton size="small">
+                          <Info/>
+                        </IconButton>
+                      </a>
+                    </Tooltip>
+                  </div>
+                </ListItem> 
+                : null}
+                 
+
+            </Collapse>
+          </div>
           
           {dailyWeather ? 
-            <ListItem>
-              Temperature (&deg;C): {(dailyWeather.temperature_2m_max + dailyWeather.temperature_2m_min / 2).toFixed(1)}
-            </ListItem> 
-            : null
-          }
-          {dailyWeather && dailyWeather.precipitation_sum ? 
+            <div>
+              <ListItemButton onClick={() => setWeatherInfoOpen(!weatherInfoOpen)} divider disableGutters className='list-button'>
+                {weatherInfoOpen ? <ExpandLess /> : <ExpandMore />}
+                <ListItemText primary="Weather" />
+              </ListItemButton>
 
-            <ListItem>
-              Precipitation (&deg;C): {(dailyWeather.precipitation_sum).toFixed(1)}
-            </ListItem> 
+              <Collapse in={weatherInfoOpen} timeout="auto" unmountOnExit className='collapsible'>
+                  
+                    <List component="div" >
+                      <ListItem>
+                        Temperature (&deg;C): {(dailyWeather.temperature_2m_max + dailyWeather.temperature_2m_min / 2).toFixed(1)}
+                      </ListItem> 
+
+                      <ListItem>
+                        Sunrise: {(dayjs(dailyWeather.sunrise)).format('h:mm A')}
+                      </ListItem> 
+
+                      <ListItem>
+                        Sunset: {(dayjs(dailyWeather.sunset)).format('h:mm A')}
+                      </ListItem>
+
+                      {/* {dailyWeather.precipitation_sum != null ?
+                        <ListItem>
+                          Total Precipitation (cm): {(dailyWeather.precipitation_sum).toFixed(0)}
+                        </ListItem>
+                      : null
+                      } */}
+
+                      {dailyWeather.rain_sum != null ?
+                        <ListItem>
+                          Rain (cm): {(dailyWeather.rain_sum).toFixed(0)}
+                        </ListItem>
+                      : null
+                      }
+
+                      {dailyWeather.snowfall_sum != null ?
+                        <ListItem>
+                          Snowfall (cm): {(dailyWeather.snowfall_sum).toFixed(0)}
+                        </ListItem>
+                      : null
+                      }
+
+                      {dailyWeather.windspeed_10m_max != null ?
+                        <ListItem>
+                          Max Windspeed (km/h): {(dailyWeather.windspeed_10m_max).toFixed(0)}
+                        </ListItem>
+                      : null
+                      }
+
+                      <ListItem>
+                        <Tooltip title={"From Open-Meteo API, click for info"} placement="right" arrow leaveDelay={200}>
+                          <a href={WEATHER_ETL_INFO_URI} target="_blank" color='white'>
+                            <IconButton size="small">
+                              <Info/>
+                            </IconButton>
+                          </a>
+                        </Tooltip>
+                      </ListItem> 
+                    </List>
+
+              </Collapse>
+
+            </div>
             : null
-          }
-          {dailyWeather ? 
-            <ListItem>
-              Sunrise: {(dayjs(dailyWeather.sunrise)).format('h:mm A')}
-            </ListItem> 
-            : null
-          }
-          {dailyWeather ? 
-            <ListItem>
-              Sunset: {(dayjs(dailyWeather.sunset)).format('h:mm A')}
-            </ListItem> 
-            : null
-          }
-          {waterBodyInfo.lake.areasqkm ? 
-            <ListItem>
-              Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm.toFixed(1)}
-            </ListItem> 
-            : null
-          }
-          {waterBodyInfo.lake.max_depth_m ? 
-            <ListItem>
-              Max Depth (m): {waterBodyInfo.lake.max_depth_m.toFixed(1)}
-            </ListItem> 
-            : null
-          }
-          <ListItem>
-            Position: {Number(waterBodyInfo.lake.latitude).toFixed(3)}, {Number(waterBodyInfo.lake.longitude).toFixed(3)}
-          </ListItem>
-          {thumbnailUrl ? 
-          <ListItem style={{flexDirection: "column", marginTop: "3px"}}>
-              {imageCaption}
-            <Divider/>
-            <ListItemIcon>
-              <img 
-                src={thumbnailUrl} 
-                alt="Loading..." 
-                className='lake-info-img'
-              />
-            </ListItemIcon>
-          </ListItem> 
-          : null}
+          }          
+          
+          <div>
+            <ListItemButton onClick={() => setWaterbodyInfoOpen(!waterbodyInfoOpen)} divider disableGutters className='list-button'>
+              {waterbodyInfoOpen ? <ExpandLess /> : <ExpandMore />}
+              <ListItemText primary="General" />
+            </ListItemButton>
+
+            <Collapse in={waterbodyInfoOpen} timeout="auto" unmountOnExit className='collapsible'>
+              <List component="div" >
+
+                {waterBodyInfo.lake.areasqkm ? 
+                  <ListItem>
+                    Surface Area (km<sup>2</sup>): {waterBodyInfo.lake.areasqkm.toFixed(1)}
+                  </ListItem> 
+                  : null
+                }
+                {waterBodyInfo.lake.max_depth_m ? 
+                  <ListItem>
+                    Max Depth (m): {waterBodyInfo.lake.max_depth_m.toFixed(1)}
+                  </ListItem> 
+                  : null
+                }
+                <ListItem>
+                  Position: {Number(waterBodyInfo.lake.latitude).toFixed(3)}, {Number(waterBodyInfo.lake.longitude).toFixed(3)}
+                </ListItem>
+                </List>
+              {/* <Divider/> */}
+            </Collapse>
+
+          </div>
+          
+          
         </List>
       </div>
   )

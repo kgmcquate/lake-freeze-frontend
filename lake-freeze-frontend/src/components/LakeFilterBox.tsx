@@ -10,9 +10,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers';
 import '../styles/LakeFilterBox.css';
 import '../styles/Map.css';
-import { DEFAULT_LAKE_COUNT_LIMIT, MAX_LAKE_COUNT_LIMIT } from './Map';
+
+import { getHexColor } from '../styles/mapStyles';
+
+import { DEFAULT_LAKE_COUNT_LIMIT, MAX_LAKE_COUNT_LIMIT, WEBSITE_INFO_URI, HOME_URL } from './Map';
 import { debounce } from './debounce';
 
+import { IconButton } from '@mui/material';
+import Info from '@mui/icons-material/InfoOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 /**
  * LakeFilterBox component provides a slider to filter the number of lakes displayed on the map.
@@ -45,7 +51,7 @@ export function LakeFilterBox({
         </LocalizationProvider>
       </div>
 
-      <Divider style={{margin: "3px"}} />
+      <Divider/>
       
       <div>
         <label id="num-lakes-label" style={{marginLeft: "3px" }}>Number of Lakes:</label>
@@ -60,6 +66,19 @@ export function LakeFilterBox({
           step={50}
           defaultValue={DEFAULT_LAKE_COUNT_LIMIT}
         />
+      </div>
+
+      <Divider/>
+
+      <div style={{marginBottom: "0px", marginTop: "1px", padding: "0px"}}>
+        Created by <a href={HOME_URL} target='_blank' style={{color: getHexColor("--primary-highlight-color")}}>Kevin McQuate</a>
+        <Tooltip title={"Written in React.js, click for more info"} placement="right" arrow leaveDelay={200}>
+          <a href={WEBSITE_INFO_URI} target="_blank" color='white'>
+            <IconButton size="small">
+              <Info/>
+            </IconButton>
+          </a>
+        </Tooltip>
       </div>
     </div>
   );

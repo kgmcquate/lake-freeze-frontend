@@ -90,7 +90,7 @@ export function LakeInfoBox({
 
         const imageUrl = `https://lake-freeze.kevin-mcquate.net/${SATELLITE_IMAGE_PREFIX}${imageInfo.thumbnail_filename}`
         
-        // console.log(imageUrl)
+        console.log(imageUrl)
 
         setThumbnailUrl(imageUrl)
       }
@@ -194,7 +194,7 @@ export function LakeInfoBox({
                 {/* <li>Date: {waterBodyInfo.lakeWeatherReport?.date}</li> */}
                 {waterBodyInfo.lakeWeatherReport && waterBodyInfo.lakeWeatherReport.ice_m > 0 ?
                   <ListItem>Ice Thickness (m): {waterBodyInfo.lakeWeatherReport?.ice_m.toFixed(2)}</ListItem> 
-                  : null
+                  : <ListItem></ListItem> 
                 }
                 {predictedWhiteFraction ?
                   

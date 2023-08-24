@@ -76,17 +76,8 @@ Resources:
           - DomainName: !Sub '${PublicS3BucketName}.s3.amazonaws.com'
             Id: !Sub 's3-origin-${PublicS3BucketName}'
             OriginPath: ''
-            S3OriginConfig:
-              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CfOriginAccessIdentity}'
         PriceClass: 'PriceClass_All'
 
-  CfOriginAccessIdentity:
-    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
-    Metadata:
-      Comment: 'Access S3 bucket content only through CloudFront'
-    Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: 'Access S3 bucket content only through CloudFront'
 
 
 

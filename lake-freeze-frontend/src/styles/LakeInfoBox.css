@@ -2,6 +2,8 @@
     border-radius: var(--border-radius);
     margin: 0px;
     min-width: 300px;
+    max-height: 400px;
+    min-height: 320px;
     background-color: var(--primary-bg-color) !important;
     font-size: medium;
     font-family: var(--primary-font);
@@ -26,7 +28,7 @@
 }
 
 .list-button {
-    padding: 2px !important;
+    padding: 1px !important;
 }
 
 .collapsible {

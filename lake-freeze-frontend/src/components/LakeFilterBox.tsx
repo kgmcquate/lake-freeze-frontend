@@ -4,6 +4,15 @@ import { Dayjs } from 'dayjs';
 
 import Slider from '@mui/material/Slider';
 import Divider from '@mui/material/Divider';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+// import ListSubheader from '@mui/material/ListSubheader';
+// import Typography from '@mui/material/Typography';
+import Collapse from '@mui/material/Collapse';
+
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -37,49 +46,64 @@ export function LakeFilterBox({
   }) {
 
   const debouncedOnLimitChange = debounce(onLimitChange, 200)
+  const [isOpen, setOpen] = React.useState(true);
+
+
 
   return (
     <div className='lake-filter-box'>
-      <div>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-              label="Date"
-              value={date}
-              onChange={setDate}
-              format="YYYY-MM-DD"
-          />
-        </LocalizationProvider>
-      </div>
 
-      <Divider/>
-      
-      <div>
-        <label id="num-lakes-label" style={{marginLeft: "3px" }}>Number of Lakes:</label>
-        <Slider
-          aria-labelledby="num-lakes-label"
-          aria-label="Number of Lakes:"
-          valueLabelDisplay="auto"
-          onChangeCommitted={(_, value) => debouncedOnLimitChange(value as number)}     
-          color='primary'     
-          min={0}
-          max={MAX_LAKE_COUNT_LIMIT}
-          step={50}
-          defaultValue={DEFAULT_LAKE_COUNT_LIMIT}
-        />
-      </div>
+      <ListItemButton onClick={() => setOpen(!isOpen)} divider disableGutters className='list-button'>
+        {isOpen ? <ExpandLess /> : <ExpandMore />}
+        <ListItemText primary="Filters" />
+      </ListItemButton >
 
-      <Divider/>
+      <Collapse in={isOpen} timeout="auto" unmountOnExit className='collapsible'  >
+        <div style={{height: "200px" ,display: "flex", flexDirection: "column", alignItems: "stretch"}}>
+          <div style={{marginBottom: "10px"}}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                  label="Date"
+                  value={date}
+                  onChange={setDate}
+                  format="YYYY-MM-DD"
+              />
+            </LocalizationProvider>
+          </div>
 
-      <div style={{marginBottom: "0px", marginTop: "1px", padding: "0px"}}>
-        Created by <a href={HOME_URL} target='_blank' rel="noreferrer" style={{color: getHexColor("--primary-highlight-color")}}>Kevin McQuate</a>
-        <Tooltip title={"Written in React.js, click for more info"} placement="right" arrow leaveDelay={200}>
-          <a href={WEBSITE_INFO_URI} target="_blank" rel="noreferrer" color='white'>
-            <IconButton size="small">
-              <Info/>
-            </IconButton>
-          </a>
-        </Tooltip>
-      </div>
+          <Divider style={{marginBottom: "10px"}}/>
+          
+          <div style={{marginBottom: "10px"}}>
+            <label id="num-lakes-label" style={{marginLeft: "3px" }}>Number of Lakes:</label>
+            <Slider
+              aria-labelledby="num-lakes-label"
+              aria-label="Number of Lakes:"
+              valueLabelDisplay="auto"
+              onChangeCommitted={(_, value) => debouncedOnLimitChange(value as number)}     
+              color='primary'     
+              min={0}
+              max={MAX_LAKE_COUNT_LIMIT}
+              step={50}
+              defaultValue={DEFAULT_LAKE_COUNT_LIMIT}
+            />
+          </div>
+
+          <Divider style={{marginBottom: "10px"}}/>
+
+          <div style={{marginBottom: "0px", padding: "0px", alignSelf: "center"}}>
+            Created by <a href={HOME_URL} target='_blank' rel="noreferrer" style={{color: getHexColor("--primary-highlight-color")}}>Kevin McQuate</a>
+            <Tooltip title={"Written in React.js, click for more info"} placement="right" arrow leaveDelay={200}>
+              <a href={WEBSITE_INFO_URI} target="_blank" rel="noreferrer" color='white'>
+                <IconButton size="small">
+                  <Info/>
+                </IconButton>
+              </a>
+            </Tooltip>
+          </div>
+        </div>
+
+      </Collapse>
+
     </div>
   );
 }

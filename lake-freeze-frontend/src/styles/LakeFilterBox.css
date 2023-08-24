@@ -4,11 +4,12 @@
     width: 20%;
     max-width: 320px;
     min-width: 200px;
-    display: flex;
-    flex-direction: column;    
-    box-sizing: border-box;
-    padding: 1%;
-    margin: 10px;
+    display: inline-grid;
+    /* flex-direction: column;     */
+    /* display: grid; */
+    /* box-sizing: border-box; */
+    padding: 4px;
+    margin: 4px;
     border-radius: var(--border-radius);
     border: solid;
     border-width: 3px;
@@ -23,6 +24,8 @@
 
 .lake-filter-box > div {
     /* flex: 1; */
+    /* display: inline-grid;
+    column-gap: 50px; */
     margin: 4%;
   }
 

@@ -1,18 +1,21 @@
 .legend {
     position: absolute;
-    left: 10px;
-    bottom: 10px;
+    left: 4px;
+    bottom: 4px;
     width: 20%;
     max-width: 320px;
     min-width: 260px;
     display: flex;
+    /* display: grid; */
+    /* grid-auto-columns: auto; */
     /* column-count: 3; */
-    flex-direction: row;
+    /* grid-column: auto; */
+    /* flex-direction: row; */
     align-items: center;
     justify-content: center;
     column-gap: 6px;
 
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     /* padding-left: 1%;
     padding-right: 1%; */
     /* margin: 10px; */
@@ -32,6 +35,8 @@
     /* flex: 1; */
     /* column-width: auto; */
     margin: 2%;
+    left: 0px;
+    /* margin-left: 0px; */
     font-size: small;
     text-align: center;
 }

@@ -15,7 +15,6 @@ env:
   PUBLIC_ZONE_BUCKET_NAME: public-zone-117819748843-us-east-1
   PUBLIC_ZONE_PREFIX: ${{ github.event.repository.name }}
 
-
 permissions:
   contents: read
 
